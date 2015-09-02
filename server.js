@@ -11,6 +11,7 @@ var SampleApp = function() {
 
     //  Scope.
     var self = this;
+    var templDir = './templates/';
 
 
     /*  ================================================================  */
@@ -43,7 +44,7 @@ var SampleApp = function() {
         }
 
         //  Local cache for static content.
-        self.zcache['index.html'] = fs.readFileSync('./index.html');
+        self.zcache['index.html'] = fs.readFileSync(templDir + 'schedule.html');
     };
 
 
@@ -114,6 +115,7 @@ var SampleApp = function() {
     self.initializeServer = function() {
         self.createRoutes();
         self.app = express.createServer();
+        self.app.use(express.static('public'));
 
         //  Add handlers for the app (from the routes).
         for (var r in self.routes) {
