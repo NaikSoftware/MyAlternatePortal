@@ -1,0 +1,24 @@
+.overline {
+    text-decoration: overline;
+}
+
+.default_body_style {
+    background-attachment: fixed;
+    background-color: hsl(34, 53%, 82%);
+    background-image: url(../img/bg.jpg);
+    background-position: center;
+}
+
+.navbar {
+    background: rgba(100,100,100,.8);
+    color: #ffffff;
+    padding-left: 0.3cm;
+}
+
+.navbar-right {
+    margin-right: 1px;
+}
+
+.large-size {
+    font-size: 27px;
+}
