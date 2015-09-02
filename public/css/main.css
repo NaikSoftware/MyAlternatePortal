@@ -9,16 +9,6 @@
     background-position: center;
 }
 
-.navbar {
-    background: rgba(100,100,100,1);
-    color: whitesmoke;
-    padding-left: 0.3cm;
-}
-
-.navbar-right {
-    margin-right: 1px;
-}
-
 .large-size {
     font-size: 27px;
 }
