@@ -10,8 +10,8 @@
 }
 
 .navbar {
-    background: rgba(100,100,100,.8);
-    color: #ffffff;
+    background: rgba(100,100,100,1);
+    color: whitesmoke;
     padding-left: 0.3cm;
 }
 
