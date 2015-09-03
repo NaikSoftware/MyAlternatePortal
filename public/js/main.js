@@ -2,6 +2,28 @@ $(function () {
 
     /* Initialize */
 
+    $('#btn_login').click(function () {
+            var pass = $('#pass').val();
+            if (validatePassword(pass)) {
+                $('#loginModal').modal('hide');
+                login(pass);
+            } else {
+                $('#myAlert').addClass('in');
+                setTimeout(function () {
+                    $('#myAlert').removeClass('in');
+                }, 1000);
+            }
+        }
+    );
+
+    function validatePassword(pass) {
+        return pass && pass.length > 5 && pass.length < 100;
+    }
+
+    function login(pass) {
+
+    }
+
 
     /* Adjust screen size */
     var navbar = $('#navbar');

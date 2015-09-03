@@ -464,14 +464,17 @@
             <div class="modal-body">
                 <div class="input-group">
                     <span class="input-group-addon">Admin</span>
-                    <input type="password" class="form-control" placeholder="Password">
+                    <input type="password" class="form-control" placeholder="Password" id="pass">
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Log in</button>
+                <button type="button" class="btn btn-primary" id="btn_login">Log in</button>
             </div>
         </div>
+        <div id="myAlert" class="alert alert-danger fade" role="alert" aria-hidden="true"">
+        <strong>Error!</strong> Password incorrect.
+    </div>
     </div>
 </div>
 
