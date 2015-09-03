@@ -1,38 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Schedule KrNU | Розклад КрНУ</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <link href="../css/main.css" rel="stylesheet" media="screen">
-  <link href="../css/schedule.css" rel="stylesheet" media="screen">
-  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-  <script src="../js/main.js"></script>
+    <title>Schedule KrNU | Розклад КрНУ</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link href="/css/main.css" rel="stylesheet" media="screen">
+    <link href="/css/schedule.css" rel="stylesheet" media="screen">
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="/js/main.js"></script>
 </head>
 <body class="container default_body_style">
-  <nav class="navbar navbar-default navbar-static-top" id="navbar" role="navigation">
-	<div class="container-fluid">
-	  <div class="navbar-header">
-		<button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
-		  <span class="sr-only">Toggle navigation</span>
-		  <span class="icon-bar"></span>
-		  <span class="icon-bar"></span>
-		  <span class="icon-bar"></span>
-		</button>
-		<span class="navbar-brand glyphicon glyphicon-calendar large-size"></span>
-		<span class="navbar-brand large-size">Schedule KrNU</span>
-	  </div>
-	  <div id="navbarCollapse" class="collapse navbar-collapse navbar-right">
-		<ul class="nav navbar-nav">
-		  <li>
-			<a href="admin" class="">Admin</a>
-		  </li>
-		</ul>
-	  </div>
-	</div>
-  </nav>
+<nav class="navbar navbar-default navbar-static-top" id="navbar" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand glyphicon glyphicon-calendar large-size"></span>
+            <span class="navbar-brand large-size">Schedule KrNU</span>
+        </div>
+        <div id="navbarCollapse" class="collapse navbar-collapse navbar-right">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#loginModal">Admin</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
 <div class="panel panel-primary">
     <div class="panel-heading"><h4 class="text-center">I    Т И Ж Д Е Н Ь:   01.09  - 06.09.2015</h4></div>
@@ -452,5 +452,34 @@
         </table>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="loginModal" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Admin panel</h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <span class="input-group-addon">Admin</span>
+                    <input type="password" class="form-control" placeholder="Password">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Log in</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<div class="bottom text-center text-danger" style="margin-bottom: 10px">
+    <span class="glyphicon glyphicon-copyright-mark"></span>
+    <span class="text-danger">SecretLabs (c)</span>
+</div>
+
 </body>
 </html>

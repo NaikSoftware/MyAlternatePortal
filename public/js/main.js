@@ -1,5 +1,9 @@
 $(function () {
 
+    /* Initialize */
+
+
+    /* Adjust screen size */
     var navbar = $('#navbar');
     var body = $('body');
 
@@ -14,6 +18,7 @@ $(function () {
             body.css('padding-top', '100px');
         }
     }
+
 });
 
 
