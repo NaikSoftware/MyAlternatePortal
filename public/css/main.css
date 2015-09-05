@@ -27,3 +27,9 @@ body {
 .large-size {
     font-size: 27px;
 }
+
+.drop-item {
+    margin-left: 7px;
+    margin-right: 7px;
+    text-align: center;
+}
