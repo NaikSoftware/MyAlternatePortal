@@ -30,10 +30,12 @@
                 <% if (!locals.admin) { %>
                     <%- include select_schedule.html %>
                     <li role="separator" class="divider"></li>
-                    <li><a href="#" data-toggle="modal" data-target="#loginModal">Admin panel</a></li>
+                    <li class="nav-item">
+                        <button class="btn navbar-btn btn-warning" href="#" data-toggle="modal" data-target="#loginModal">Админка</button>
+                    </li>
                 <% } else { %>
-                    <li>
-                        <a href="#" data-toggle="modal" data-target="#loginModal">Logout</a>
+                    <li class="nav-item">
+                        <a class="btn navbar-btn btn-warning" href="#">Logout</a>
                     </li>
                 <% } %>
             </ul>

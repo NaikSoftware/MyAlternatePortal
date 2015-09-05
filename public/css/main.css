@@ -33,3 +33,22 @@ body {
     margin-right: 7px;
     text-align: center;
 }
+
+.form-inline {
+    margin-right: 80px;
+}
+
+@media screen and (max-width: 768px) {
+    .nav {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .navbar-btn, .btn[data-toggle=dropdown] {
+        width: 100%;
+    }
+
+    .form-inline {
+        margin-right: inherit;
+    }
+}

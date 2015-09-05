@@ -35,7 +35,7 @@
     }
 }
 
-@media screen and (min-width: 15cm) and (max-width: 27cm){
+@media screen and (min-width: 15cm) and (max-width: 27cm) {
     .flex-item {
         max-width: 50%;
     }
