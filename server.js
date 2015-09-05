@@ -45,7 +45,7 @@ var SampleApp = function () {
         }
 
         //  Local cache for static content.
-        self.zcache['index.html'] = ejs.compile(fs.readFileSync(templDir + 'schedule.html', 'utf-8'), {filename: 'templates/schedule.html'});
+        self.zcache['index.html'] = ejs.compile(fs.readFileSync(templDir + 'index.html', 'utf-8'), {filename: 'templates/index.html'});
     };
 
 
@@ -115,7 +115,7 @@ var SampleApp = function () {
     };
 
 
-    self.renderTemplate = function(template, data) {
+    self.renderTemplate = function (template, data) {
         return template(data);
     }
 

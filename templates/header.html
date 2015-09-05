@@ -4,14 +4,15 @@
     <title>Schedule KrNU | Розклад КрНУ</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/css/bootstrap.min.css"  rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/main.css" rel="stylesheet" media="screen">
     <link href="/css/schedule.css" rel="stylesheet" media="screen">
     <script src="/js/jquery-2.1.4.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/main.js"></script>
 </head>
-<body class="container default_body_style">
+<body>
+<div class="container main">
 <nav class="navbar navbar-default navbar-static-top" id="navbar" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -26,9 +27,15 @@
         </div>
         <div id="navbarCollapse" class="collapse navbar-collapse navbar-right">
             <ul class="nav navbar-nav">
+                <% if (!locals.admin) { %>
                 <li>
                     <a href="#" data-toggle="modal" data-target="#loginModal">Admin</a>
                 </li>
+                <% } else { %>
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#loginModal">Logout</a>
+                </li>
+                <% } %>
             </ul>
         </div>
     </div>

@@ -1,0 +1,14 @@
+<%- include header.html             %>
+
+
+<% if (locals.schedule) {           %>
+<%-     include schedule.html       %>
+<% }                                %>
+
+<% if (!locals.admin) {             %>
+<%-     include login_modal.html    %>
+<% } else {                         %>
+<%-     include admin_panel.html    %>
+<% }                                %>
+
+<%- include footer.html             %>

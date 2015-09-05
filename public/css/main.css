@@ -2,11 +2,26 @@
     text-decoration: overline;
 }
 
-.default_body_style {
+html {
+    height: 100%;
+}
+
+body {
     background-attachment: fixed;
     background-color: hsl(34, 53%, 82%);
     background-image: url(../img/bg.jpg);
     background-position: center;
+    height: 100%;
+}
+
+.main {
+    padding-bottom: 30px;
+    min-height: 100%;
+}
+
+.footer {
+    height: 30px;
+    margin-top: -30px;
 }
 
 .large-size {

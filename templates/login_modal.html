@@ -1,0 +1,24 @@
+<div class="modal fade" id="loginModal" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Admin panel</h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <span class="input-group-addon">Admin</span>
+                    <input type="password" class="form-control" placeholder="Password" id="pass">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btn_login">Log in</button>
+            </div>
+        </div>
+        <div id="myAlert" class="alert alert-danger fade" role="alert" aria-hidden="true" style="margin-top: 20px;">
+            <strong>Error!</strong> Password incorrect.
+        </div>
+    </div>
+</div>
