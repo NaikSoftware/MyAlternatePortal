@@ -1,5 +1,5 @@
 {
-  "name": "OpenShift-Sample-App",
+  "name": "OpenShift-MyAlternate",
   "version": "1.0.0",
   "description": "OpenShift Sample Application",
   "keywords": [
@@ -25,7 +25,7 @@
   },
 
   "dependencies": {
-    "express": "~3.4.4",
+    "express": ">=3.4.4",
     "ejs": ">=2.3.3",
     "mongoose": ">=4.1.5",
     "express-session": ">=1.11.3",

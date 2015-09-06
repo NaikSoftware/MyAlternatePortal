@@ -3,10 +3,9 @@
 var express = require('express');
 var fs = require('fs');
 var ejs = require('ejs');
-
 var mongoose = require('mongoose');
-var session = require('express-session');
-var MongoStore = require('connect-mongo')(session);
+
+var Auth = require('./auth');
 
 
 /**
@@ -132,18 +131,15 @@ var SampleApp = function () {
      */
     self.initializeServer = function () {
         self.createRoutes();
-        self.app = express.createServer();
+        self.app = express();
         self.app.use(express.static('public'));
 
         // Setup connection to MongoDB
         self.mongo = mongoose.createConnection(self.mongo_str);
         console.log('Connected to ' + self.mongo_str);
 
-        // Setup sessions
-        self.app.use(session({
-            secret: 'secret_labs',
-            store: new MongoStore({mongooseConnection: self.mongo})
-        }));
+        // Setup auth
+        self.auth = new Auth(self);
 
         //  Add handlers for the app (from the routes).
         for (var r in self.routes) {
