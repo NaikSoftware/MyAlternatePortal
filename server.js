@@ -4,6 +4,10 @@ var express = require('express');
 var fs = require('fs');
 var ejs = require('ejs');
 
+var mongoose = require('mongoose');
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
+
 
 /**
  *  Define the sample application.
@@ -26,6 +30,9 @@ var SampleApp = function () {
         //  Set the environment variables we need.
         self.ipaddress = process.env.OPENSHIFT_NODEJS_IP;
         self.port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+        self.db_host = process.env.OPENSHIFT_MONGODB_DB_HOST || 'localhost';
+        self.db_port = process.env.OPENSHIFT_MONGODB_DB_PORT || '27017';
+        self.db_name = 'my';
 
         if (typeof self.ipaddress === "undefined") {
             //  Log errors on OpenShift but continue w/ 127.0.0.1 - this
@@ -128,6 +135,17 @@ var SampleApp = function () {
         self.createRoutes();
         self.app = express.createServer();
         self.app.use(express.static('public'));
+
+        // Setup connection to MongoDB
+        var mongoConnStr = 'mongodb://' + self.db_host + ':' + self.db_port + '/' + self.db_name;
+        self.mongo = mongoose.createConnection(mongoConnStr);
+        console.log('Connected to ' + mongoConnStr);
+
+        // Setup sessions
+        self.app.use(session({
+            secret: 'secret_labs',
+            store: new MongoStore({mongooseConnection: self.mongo})
+        }));
 
         //  Add handlers for the app (from the routes).
         for (var r in self.routes) {

@@ -26,7 +26,10 @@
 
   "dependencies": {
     "express": "~3.4.4",
-    "ejs": ">=2.3.3"
+    "ejs": ">=2.3.3",
+    "mongoose": ">=4.1.5",
+    "express-session": ">=1.11.3",
+    "connect-mongo": ">=0.8.2"
   },
   "devDependencies": {},
   "bundleDependencies": [],
