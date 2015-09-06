@@ -23,21 +23,21 @@
                 <span class="icon-bar"></span>
             </button>
             <span class="navbar-brand glyphicon glyphicon-calendar large-size"></span>
-            <span class="navbar-brand large-size">Schedule KrNU</span>
+            <a class="navbar-brand large-size" href="/">Schedule KrNU</a>
         </div>
         <div id="navbarCollapse" class="collapse navbar-collapse navbar-right">
             <ul class="nav navbar-nav">
-                <% if (!locals.admin) { %>
+                <% if (locals.schedule) { %>
                     <%- include select_schedule.html %>
+                <% } %>
                     <li role="separator" class="divider"></li>
                     <li class="nav-item">
-                        <button class="btn navbar-btn btn-warning" href="#" data-toggle="modal" data-target="#loginModal">Админка</button>
+                        <% if (locals.logined) { %>
+                            <button class="btn navbar-btn btn-warning" id="btn_logout">Logout</button>
+                        <% } else { %>
+                            <button class="btn navbar-btn btn-warning" data-toggle="modal" data-target="#loginModal">Админка</button>
+                        <% } %>
                     </li>
-                <% } else { %>
-                    <li class="nav-item">
-                        <a class="btn navbar-btn btn-warning" href="#">Logout</a>
-                    </li>
-                <% } %>
             </ul>
         </div>
     </div>

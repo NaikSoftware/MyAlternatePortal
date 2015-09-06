@@ -50,7 +50,9 @@ var SampleApp = function () {
         }
 
         //  Local cache for static content.
-        self.zcache['index.html'] = ejs.compile(fs.readFileSync(templDir + 'index.html', 'utf-8'), {filename: 'templates/index.html'});
+        ['index.html', 'admin_panel.html'].forEach(function (page) {
+            self.zcache[page] = ejs.compile(fs.readFileSync(templDir + page, 'utf-8'), {filename: 'templates/' + page});
+        });
     };
 
 
@@ -106,17 +108,28 @@ var SampleApp = function () {
      *  Create the routing table entries + handlers for the application.
      */
     self.createRoutes = function () {
-        self.routes = {};
+        self.routes_get = {};
+        self.routes_post = {};
 
-        self.routes['/asciimo'] = function (req, res) {
-            var link = "http://i.imgur.com/kmbjB.png";
-            res.send("<html><body><img src='" + link + "'></body></html>");
-        };
-
-        self.routes['/'] = function (req, res) {
+        self.routes_get['*'] = function (req, res, next) {
             res.setHeader('Content-Type', 'text/html');
-            res.send(self.renderTemplate(self.cache_get('index.html')));
+            next();
         };
+
+        self.routes_get['/'] = function (req, res) {
+            res.send(self.renderTemplate(self.cache_get('index.html'), {schedule: true}));
+        };
+
+        self.routes_post['/login'] = function (req, res) {
+            res.setHeader('Content-Type', 'application/json');
+            if (req.body.name === 'Admin' && req.body.password === 'admin') res.send('{"ok": "true"}');
+            else res.send('{}');
+        };
+
+        self.routes_get['/admin'] = function (req, res) {
+            res.send(self.renderTemplate(self.cache_get('admin_panel.html'), {logined: true}));
+        };
+
     };
 
 
@@ -126,13 +139,14 @@ var SampleApp = function () {
 
 
     /**
-     *  Initialize the server (express) and create the routes and register
+     *  Initialize the server (express) and create the routes_get and register
      *  the handlers.
      */
     self.initializeServer = function () {
         self.createRoutes();
         self.app = express();
         self.app.use(express.static('public'));
+        self.app.use(require('body-parser').json());
 
         // Setup connection to MongoDB
         self.mongo = mongoose.createConnection(self.mongo_str);
@@ -142,8 +156,11 @@ var SampleApp = function () {
         self.auth = new Auth(self);
 
         //  Add handlers for the app (from the routes).
-        for (var r in self.routes) {
-            self.app.get(r, self.routes[r]);
+        for (var r in self.routes_get) {
+            self.app.get(r, self.routes_get[r]);
+        }
+        for (var r in self.routes_post) {
+            self.app.post(r, self.routes_post[r]);
         }
     };
 
@@ -156,7 +173,7 @@ var SampleApp = function () {
         self.populateCache();
         self.setupTerminationHandlers();
 
-        // Create the express server and routes.
+        // Create the express server and routes_get.
         self.initializeServer();
     };
 

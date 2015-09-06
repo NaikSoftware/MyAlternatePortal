@@ -1,11 +1,10 @@
 <%- include header.html             %>
 
 
-<% if (!locals.admin) {             %>
+<% if (!locals.logined) {           %>
 <%-     include login_modal.html    %>
-<% } else {                         %>
-<%-     include admin_panel.html    %>
 <% }                                %>
 
+<div id="content"></div>
 
 <%- include footer.html             %>

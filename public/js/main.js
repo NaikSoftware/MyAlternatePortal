@@ -3,25 +3,40 @@ $(function () {
     /* Initialize */
 
     $('#btn_login').click(function () {
-            var pass = $('#pass').val();
-            if (validatePassword(pass)) {
-                $('#loginModal').modal('hide');
-                login(pass);
-            } else {
-                $('#myAlert').addClass('in');
-                setTimeout(function () {
-                    $('#myAlert').removeClass('in');
-                }, 1000);
-            }
-        }
-    );
+        var pass = $('#pass').val();
+        login(pass);
+    });
 
-    function validatePassword(pass) {
-        return pass && pass.length > 5 && pass.length < 100;
+    $('#btn_logout').click(function () {
+        var pass = $('#pass').val();
+        logout();
+    });
+
+    function login(pass, next) {
+        var data = {name: 'Admin', password: pass};
+        $.ajax({
+            url: '/login',
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+        })
+            .done(function (res) {
+                if (res.ok) window.location.href = 'admin';
+                else showLoginError();
+            })
+            .error(showLoginError);
     }
 
-    function login(pass) {
+    function showLoginError(err) {
+        $('#myAlert').addClass('in');
+        setTimeout(function () {
+            $('#myAlert').removeClass('in');
+        }, 1000);
+    }
 
+    function logout() {
+        window.location.href = '/';
     }
 
 
