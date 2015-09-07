@@ -122,8 +122,8 @@ var SampleApp = function () {
 
         self.routes_post['/login'] = function (req, res) {
             res.setHeader('Content-Type', 'application/json');
-            if (req.body.name === 'Admin' && req.body.password === 'admin') res.send('{"ok": "true"}');
-            else res.send('{}');
+            if (req.body.name === 'Admin' && req.body.password === 'admin') res.send('{}');
+            else res.redirect(404);
         };
 
         self.routes_get['/admin'] = function (req, res) {

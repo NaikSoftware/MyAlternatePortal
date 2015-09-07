@@ -8,7 +8,6 @@ $(function () {
     });
 
     $('#btn_logout').click(function () {
-        var pass = $('#pass').val();
         logout();
     });
 
@@ -22,8 +21,7 @@ $(function () {
             dataType: 'json',
         })
             .done(function (res) {
-                if (res.ok) window.location.href = 'admin';
-                else showLoginError();
+                window.location.href = 'admin';
             })
             .error(showLoginError);
     }
