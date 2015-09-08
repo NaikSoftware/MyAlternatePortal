@@ -11,6 +11,10 @@ $(function () {
         logout();
     });
 
+    $('#btn_admin_panel').click(function () {
+        window.location.href = 'admin';
+    });
+
     function login(pass, next) {
         var data = {name: 'Admin', password: pass};
         $.ajax({
@@ -34,7 +38,7 @@ $(function () {
     }
 
     function logout() {
-        window.location.href = '/';
+        window.location.href = '/logout';
     }
 
 

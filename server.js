@@ -98,16 +98,24 @@ var App = function () {
         }]));
 
         routes.push(new Route('GET', '/', [function (req, res) {
-            res.send(self.zcache['index.html']({schedule: true}));
+            res.send(self.zcache['index.html']({schedule: true, logined: req.session.logined}));
         }]));
 
         routes.push(new Route('POST', '/login', [function (req, res) {
             res.setHeader('Content-Type', 'application/json');
-            if (self.auth.check(req.body.name, req.body.password)) {
-                res.send('{}');
-            } else {
-                res.sendStatus(403);
-            }
+            self.auth.check(req.body.name, req.body.password, function (result) {
+                if (result) {
+                    req.session.logined = true;
+                    res.send('{}');
+                } else {
+                    res.sendStatus(403);
+                }
+            });
+        }]));
+
+        routes.push(new Route('GET', '/logout', [function (req, res) {
+            delete req.session.logined;
+            res.redirect('/');
         }]));
 
         routes.push(new Route('GET', '/admin', [function (req, res) {
@@ -138,11 +146,11 @@ var App = function () {
         self.app.use(require('body-parser').json());
 
         // Setup connection to MongoDB
-        self.mongo = mongoose.createConnection(self.mongo_str);
+        self.mongoConn = mongoose.createConnection(self.mongo_str);
         console.log('Connected to ' + self.mongo_str);
 
         // Setup auth
-        self.auth = new Auth(self);
+        self.auth = new Auth(mongoose, self);
 
         //  Add handlers for the app (from the routes).
         self.getRoutes().forEach(function (route) {

@@ -52,3 +52,8 @@ body {
         margin-right: inherit;
     }
 }
+
+li[class=nav-item] {
+    margin-right: 5px;
+    margin-left: 5px;
+}

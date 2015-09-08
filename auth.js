@@ -5,21 +5,30 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var crypto = require('crypto');
 
-module.exports = function Auth(server) {
-    console.log('Auth module');
+module.exports = function Auth(mongoose, application) {
 
-    server.app.use(session({
+    application.app.use(session({
         secret: 'secret_labs',
-        store: new MongoStore({mongooseConnection: server.mongo})
+        store: new MongoStore({mongooseConnection: application.mongoConn})
     }));
 
-    this.mongo = server.mongo;
+    var mongoConn = application.mongoConn;
+    var Schema = mongoose.Schema;
 
-    Auth.prototype.check = function (login, pass) {
-        return false;
+    var userSchema = new Schema({name: String, password: String});
+    var User = mongoConn.model('users', userSchema);
+
+    Auth.prototype.check = function (login, pass, handler) {
+        User.findOne({name: 'Admin', password: strToHash(pass)}, function (err, result) {
+            if (err || !result) {
+                handler(false);
+            } else {
+                handler(true);
+            }
+        });
     };
 };
 
 function strToHash(str) {
-    return crypto.createHash().update(pass).digest('hex');
+    return crypto.createHash('md5').update(str).digest('hex');
 }

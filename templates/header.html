@@ -31,13 +31,18 @@
                     <%- include select_schedule.html %>
                 <% } %>
                     <li role="separator" class="divider"></li>
-                    <li class="nav-item">
                         <% if (locals.logined) { %>
-                            <button class="btn navbar-btn btn-warning" id="btn_logout">Logout</button>
+                            <li class="nav-item">
+                                <button class="btn navbar-btn btn-warning" id="btn_admin_panel">Admin Panel</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="btn navbar-btn btn-warning" id="btn_logout">Logout</button>
+                            </li>
                         <% } else { %>
-                            <button class="btn navbar-btn btn-warning" data-toggle="modal" data-target="#loginModal">Админка</button>
+                            <li class="nav-item">
+                                <button class="btn navbar-btn btn-warning" data-toggle="modal" data-target="#loginModal">Login</button>
+                            </li>
                         <% } %>
-                    </li>
             </ul>
         </div>
     </div>
