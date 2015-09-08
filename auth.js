@@ -20,11 +20,7 @@ module.exports = function Auth(mongoose, application) {
 
     Auth.prototype.check = function (login, pass, handler) {
         User.findOne({name: 'Admin', password: strToHash(pass)}, function (err, result) {
-            if (err || !result) {
-                handler(false);
-            } else {
-                handler(true);
-            }
+            handler(!err && result);
         });
     };
 };
