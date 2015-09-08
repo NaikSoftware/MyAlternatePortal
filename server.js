@@ -1,5 +1,5 @@
 #!/bin/env node
-//  OpenShift sample Node application
+//  OpenShift Node application
 var express = require('express');
 var fs = require('fs');
 var ejs = require('ejs');
@@ -9,13 +9,12 @@ var Auth = require('./auth');
 
 
 /**
- *  Define the sample application.
+ *  Define the application.
  */
-var SampleApp = function () {
+var App = function () {
 
     //  Scope.
     var self = this;
-    var templDir = './templates/';
 
 
     /*  ================================================================  */
@@ -27,17 +26,11 @@ var SampleApp = function () {
      */
     self.setupVariables = function () {
         //  Set the environment variables we need.
-        self.ipaddress = process.env.OPENSHIFT_NODEJS_IP;
+        self.ipaddress = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
         self.port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
         self.mongo_str = (process.env.OPENSHIFT_MONGODB_DB_URL + process.env.OPENSHIFT_GEAR_NAME)
             || 'mongodb://localhost:27017/my';
-
-        if (typeof self.ipaddress === "undefined") {
-            //  Log errors on OpenShift but continue w/ 127.0.0.1 - this
-            //  allows us to run/test the app locally.
-            console.warn('No OPENSHIFT_NODEJS_IP var, using 127.0.0.1');
-            self.ipaddress = "127.0.0.1";
-        }
+        self.templDir = './templates/';
     };
 
 
@@ -45,23 +38,11 @@ var SampleApp = function () {
      *  Populate the cache.
      */
     self.populateCache = function () {
-        if (typeof self.zcache === "undefined") {
-            self.zcache = {'index.html': ''};
-        }
-
+        self.zcache = {};
         //  Local cache for static content.
         ['index.html', 'admin_panel.html'].forEach(function (page) {
-            self.zcache[page] = ejs.compile(fs.readFileSync(templDir + page, 'utf-8'), {filename: 'templates/' + page});
+            self.zcache[page] = ejs.compile(fs.readFileSync(self.templDir + page, 'utf-8'), {filename: 'templates/' + page});
         });
-    };
-
-
-    /**
-     *  Retrieve entry (content) from cache.
-     *  @param {string} key  Key identifying content to retrieve from cache.
-     */
-    self.cache_get = function (key) {
-        return self.zcache[key];
     };
 
 
@@ -117,7 +98,7 @@ var SampleApp = function () {
         };
 
         self.routes_get['/'] = function (req, res) {
-            res.send(self.renderTemplate(self.cache_get('index.html'), {schedule: true}));
+            res.send(self.zcache['index.html']({schedule: true}));
         };
 
         self.routes_post['/login'] = function (req, res) {
@@ -127,20 +108,14 @@ var SampleApp = function () {
         };
 
         self.routes_get['/admin'] = function (req, res) {
-            res.send(self.renderTemplate(self.cache_get('admin_panel.html'), {logined: true}));
+            res.send(self.zcache['admin_panel.html']({logined: true}));
         };
 
     };
 
 
-    self.renderTemplate = function (template, data) {
-        return template(data);
-    }
-
-
     /**
-     *  Initialize the server (express) and create the routes_get and register
-     *  the handlers.
+     *  Initialize the server (express) and create the routes and register the handlers.
      */
     self.initializeServer = function () {
         self.createRoutes();
@@ -190,13 +165,13 @@ var SampleApp = function () {
     };
 
 };
-/*  Sample Application.  */
+/*  App  */
 
 
 /**
  *  main():  Main code.
  */
-var zapp = new SampleApp();
+var zapp = new App();
 zapp.initialize();
 zapp.start();
 
