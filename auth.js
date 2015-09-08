@@ -5,20 +5,19 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var crypto = require('crypto');
 
-module.exports = function (server) {
+module.exports = function Auth(server) {
+    console.log('Auth module');
 
-    function Auth(server) {
-        server.app.use(session({
-            secret: 'secret_labs',
-            store: new MongoStore({mongooseConnection: server.mongo})
-        }));
-    }
+    server.app.use(session({
+        secret: 'secret_labs',
+        store: new MongoStore({mongooseConnection: server.mongo})
+    }));
 
-    function check(name, pass) {
+    this.mongo = server.mongo;
 
-    }
-
-    return Auth(server);
+    Auth.prototype.check = function (login, pass) {
+        return false;
+    };
 };
 
 function strToHash(str) {

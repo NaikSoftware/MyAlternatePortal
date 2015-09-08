@@ -41,7 +41,8 @@ var App = function () {
         self.zcache = {};
         //  Local cache for static content.
         ['index.html', 'admin_panel.html'].forEach(function (page) {
-            self.zcache[page] = ejs.compile(fs.readFileSync(self.templDir + page, 'utf-8'), {filename: 'templates/' + page});
+            self.zcache[page] = ejs.compile(fs.readFileSync(self.templDir + page, 'utf-8'),
+                {filename: self.templDir + page});
         });
     };
 
@@ -88,29 +89,43 @@ var App = function () {
     /**
      *  Create the routing table entries + handlers for the application.
      */
-    self.createRoutes = function () {
-        self.routes_get = {};
-        self.routes_post = {};
+    self.getRoutes = function () {
+        var routes = [];
 
-        self.routes_get['*'] = function (req, res, next) {
+        routes.push(new Route('GET', '*', [function (req, res, next) {
             res.setHeader('Content-Type', 'text/html');
             next();
-        };
+        }]));
 
-        self.routes_get['/'] = function (req, res) {
+        routes.push(new Route('GET', '/', [function (req, res) {
             res.send(self.zcache['index.html']({schedule: true}));
-        };
+        }]));
 
-        self.routes_post['/login'] = function (req, res) {
+        routes.push(new Route('POST', '/login', [function (req, res) {
             res.setHeader('Content-Type', 'application/json');
-            if (req.body.name === 'Admin' && req.body.password === 'admin') res.send('{}');
-            else res.redirect(404);
-        };
+            if (self.auth.check(req.body.name, req.body.password)) {
+                res.send('{}');
+            } else {
+                res.sendStatus(403);
+            }
+        }]));
 
-        self.routes_get['/admin'] = function (req, res) {
-            res.send(self.zcache['admin_panel.html']({logined: true}));
-        };
+        routes.push(new Route('GET', '/admin', [function (req, res) {
+            if (typeof req.session.logined != 'undefined') {
+                res.send(self.zcache['admin_panel.html']({logined: true}));
+            } else {
+                res.sendStatus(403);
+            }
+        }]));
 
+        return routes;
+    };
+
+
+    var Route = function (method, path, handlers) {
+        this.path = path;
+        this.method = method;
+        this.handlers = handlers;
     };
 
 
@@ -118,7 +133,6 @@ var App = function () {
      *  Initialize the server (express) and create the routes and register the handlers.
      */
     self.initializeServer = function () {
-        self.createRoutes();
         self.app = express();
         self.app.use(express.static('public'));
         self.app.use(require('body-parser').json());
@@ -131,12 +145,11 @@ var App = function () {
         self.auth = new Auth(self);
 
         //  Add handlers for the app (from the routes).
-        for (var r in self.routes_get) {
-            self.app.get(r, self.routes_get[r]);
-        }
-        for (var r in self.routes_post) {
-            self.app.post(r, self.routes_post[r]);
-        }
+        self.getRoutes().forEach(function (route) {
+            if (route.method === 'GET') self.app.get(route.path, route.handlers);
+            else if (route.method === 'POST') self.app.post(route.path, route.handlers);
+            else self.app.all(route.path, route.handlers);
+        });
     };
 
 
