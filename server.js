@@ -1,12 +1,9 @@
 #!/bin/env node
 //  OpenShift Node application
 var express = require('express');
-var fs = require('fs');
-var ejs = require('ejs');
 var mongoose = require('mongoose');
 
 var Auth = require('./auth');
-var AdminPanel = require('./routes/admin');
 
 
 /**
@@ -31,20 +28,6 @@ var App = function () {
         self.port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
         self.mongo_str = (process.env.OPENSHIFT_MONGODB_DB_URL + process.env.OPENSHIFT_GEAR_NAME)
             || 'mongodb://localhost:27017/my';
-        self.templDir = './templates/';
-    };
-
-
-    /**
-     *  Populate the cache.
-     */
-    self.populateCache = function () {
-        self.zcache = {};
-        //  Local cache for static content.
-        ['index.html', 'admin_panel.html'].forEach(function (page) {
-            self.zcache[page] = ejs.compile(fs.readFileSync(self.templDir + page, 'utf-8'),
-                {filename: self.templDir + page});
-        });
     };
 
 
@@ -91,53 +74,13 @@ var App = function () {
      *  Create the routing table entries + handlers for the application.
      */
     self.getRoutes = function () {
-        var routes = [];
-
-        routes.push(new Route('GET', '*', function (req, res, next) {
-            res.setHeader('Content-Type', 'text/html');
-            res.locals.data = { logined: req.session.logined };
-            next();
-        }));
-
-        routes.push(new Route('GET', '/', function (req, res) {
-            res.locals.data.schedule = true;
-            res.send(self.zcache['index.html'](res.locals.data));
-        }));
-
-        routes.push(new Route('POST', '/login', function (req, res) {
-            res.setHeader('Content-Type', 'application/json');
-            self.auth.check(req.body.name, req.body.password, function (result) {
-                if (result) {
-                    req.session.logined = true;
-                    res.send('{}');
-                } else {
-                    res.sendStatus(403);
-                }
-            });
-        }));
-
-        routes.push(new Route('GET', '/logout', function (req, res) {
-            delete req.session.logined;
-            res.redirect('/');
-        }));
-
-        /*routes.push(new Route('GET', '/admin', function (req, res) {
-            if (typeof req.session.logined != 'undefined') {
-                res.send(self.zcache['admin_panel.html'](res.locals.data));
-            } else {
-                res.sendStatus(403);
-            }
-        }));*/
-        routes.push(AdminPanel);
-
-        return routes;
-    };
-
-
-    var Route = function (method, path, handlers) {
-        this.path = path;new AdminPanel();
-        this.method = method;
-        this.handlers = handlers;
+        return [
+            new (require('./routes/RootGet')),
+            new (require('./routes/Index')),
+            new (require('./routes/Login'))(self.authorization),
+            new (require('./routes/admin')),
+            new (require('./routes/Logout'))
+        ];
     };
 
 
@@ -153,11 +96,12 @@ var App = function () {
         self.mongoConn = mongoose.createConnection(self.mongo_str);
         console.log('Connected to ' + self.mongo_str);
 
-        // Setup auth
-        self.auth = new Auth(mongoose, self);
+        // Setup authorization
+        self.authorization = new Auth(mongoose, self);
 
         //  Add handlers for the app (from the routes).
         self.getRoutes().forEach(function (route) {
+            //console.dir(route);
             if (route.method === 'GET') self.app.get(route.path, route.handlers);
             else if (route.method === 'POST') self.app.post(route.path, route.handlers);
             else self.app.all(route.path, route.handlers);
@@ -170,7 +114,6 @@ var App = function () {
      */
     self.initialize = function () {
         self.setupVariables();
-        self.populateCache();
         self.setupTerminationHandlers();
 
         // Create the express server and routes_get.

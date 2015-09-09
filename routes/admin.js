@@ -5,12 +5,17 @@
 var Route = require('./route');
 
 module.exports = function AdminPanel() {
+    var self = this;
 
-    AdminPanel.prototype = Object.create(Route.prototype);
-    Route.apply(this, 'GET', '/admin');
+    Route.extend(AdminPanel);
+    Route.call(this, 'GET', '/admin');
 
-    addHandler(function (req, res) {
-        res.sendStatus(500);
+    self.addHandler(function (req, res) {
+        if (typeof req.session.logined != 'undefined') {
+            res.send(self.getTemplate('admin_panel.html')(res.locals.data));
+        } else {
+            res.sendStatus(403);
+        }
     });
 
 };
