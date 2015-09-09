@@ -31,6 +31,7 @@
     "express-session": ">=1.11.3",
     "connect-mongo": ">=0.8.2",
     "body-parser": ">=1.13.3"
+    "xlsx": ">=0.8.0"
   },
   "devDependencies": {},
   "bundleDependencies": [],
