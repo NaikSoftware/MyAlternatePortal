@@ -6,6 +6,7 @@ var ejs = require('ejs');
 var mongoose = require('mongoose');
 
 var Auth = require('./auth');
+var AdminPanel = require('./routes/admin');
 
 
 /**
@@ -92,16 +93,18 @@ var App = function () {
     self.getRoutes = function () {
         var routes = [];
 
-        routes.push(new Route('GET', '*', [function (req, res, next) {
+        routes.push(new Route('GET', '*', function (req, res, next) {
             res.setHeader('Content-Type', 'text/html');
+            res.locals.data = { logined: req.session.logined };
             next();
-        }]));
+        }));
 
-        routes.push(new Route('GET', '/', [function (req, res) {
-            res.send(self.zcache['index.html']({schedule: true, logined: req.session.logined}));
-        }]));
+        routes.push(new Route('GET', '/', function (req, res) {
+            res.locals.data.schedule = true;
+            res.send(self.zcache['index.html'](res.locals.data));
+        }));
 
-        routes.push(new Route('POST', '/login', [function (req, res) {
+        routes.push(new Route('POST', '/login', function (req, res) {
             res.setHeader('Content-Type', 'application/json');
             self.auth.check(req.body.name, req.body.password, function (result) {
                 if (result) {
@@ -111,27 +114,28 @@ var App = function () {
                     res.sendStatus(403);
                 }
             });
-        }]));
+        }));
 
-        routes.push(new Route('GET', '/logout', [function (req, res) {
+        routes.push(new Route('GET', '/logout', function (req, res) {
             delete req.session.logined;
             res.redirect('/');
-        }]));
+        }));
 
-        routes.push(new Route('GET', '/admin', [function (req, res) {
+        /*routes.push(new Route('GET', '/admin', function (req, res) {
             if (typeof req.session.logined != 'undefined') {
-                res.send(self.zcache['admin_panel.html']({logined: true}));
+                res.send(self.zcache['admin_panel.html'](res.locals.data));
             } else {
                 res.sendStatus(403);
             }
-        }]));
+        }));*/
+        routes.push(AdminPanel);
 
         return routes;
     };
 
 
     var Route = function (method, path, handlers) {
-        this.path = path;
+        this.path = path;new AdminPanel();
         this.method = method;
         this.handlers = handlers;
     };
