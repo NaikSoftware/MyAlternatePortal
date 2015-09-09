@@ -78,7 +78,7 @@ var App = function () {
             new (require('./routes/RootGet')),
             new (require('./routes/Index')),
             new (require('./routes/Login'))(self.authorization),
-            new (require('./routes/admin')),
+            new (require('./routes/Admin')),
             new (require('./routes/Logout'))
         ];
     };
