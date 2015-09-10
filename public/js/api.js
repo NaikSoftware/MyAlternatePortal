@@ -7,8 +7,24 @@ var API = function () {
     var self = this;
     self.path = '/get-schedule';
 
-    self.getFaculties = function () {
+    self.fillFaculties = function (list) {
+        list.empty();
+        list.append(self.createDropItem('glyphicon-hourglass', 'Загрузка'));
+    };
 
+    self.fillCourses = function (list, facultyId) {
+        list.empty();
+        list.append(self.createDropItem('glyphicon-hourglass', 'Загрузка'));
+    };
+
+    self.fillGroups = function (list, courseId) {
+        list.empty();
+        list.append(self.createDropItem('glyphicon-hourglass', 'Загрузка'));
+    };
+
+    self.createDropItem = function (icon, string) {
+        var ic = $('<span>').addClass('glyphicon ' + icon);
+        return $('<li>').addClass('drop-item').append(ic, string);
     };
 
 };
