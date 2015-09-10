@@ -15,15 +15,9 @@ $(function () {
         window.location.href = 'admin';
     });
 
-    function login(pass, next) {
+    function login(pass) {
         var data = {name: 'Admin', password: pass};
-        $.ajax({
-            url: '/login',
-            type: 'POST',
-            data: JSON.stringify(data),
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-        })
+        API.jsonQuery('/login', data)
             .done(function (res) {
                 window.location.href = 'admin';
             })
