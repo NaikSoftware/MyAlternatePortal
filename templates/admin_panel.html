@@ -4,20 +4,18 @@
     <div class="panel-heading"><h4 class="text-center">Admin panel</h4></div>
     <div class="panel-body">
         <form>
-            <div class="col-lg-6 col-md-6 col-6">
-                <label for="file">Select file for converting (supported <span class="text-info">xls, xlsx</span>)</label>
+            <div class="form-group">
+                <label for="file">Select file for converting (supported <span
+                        class="text-info">xls, xlsx</span>)</label>
 
-                <div class="input-group">
-                <span class="input-group-btn">
-                    <span class="btn btn-primary btn-file">
-                        Browse&hellip; <input type="file">
+                <div class="input-group col-md-6">
+                    <span class="input-group-btn">
+                        <span class="btn btn-primary btn-file">Browse&hellip; <input type="file"></span>
                     </span>
-                </span>
                     <input type="text" class="form-control" readonly id="file">
                 </div>
             </div>
-                <button type="submit" class="btn btn-primary">Convert & Save</button>
-
+            <button type="submit" class="btn btn-primary">Convert & Save</button>
         </form>
     </div>
 </div>
