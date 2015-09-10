@@ -8,24 +8,30 @@ var API = function () {
     self.path = '/get-schedule';
 
     self.fillFaculties = function (list) {
-        list.empty();
-        list.append(self.createDropItem('glyphicon-hourglass', 'Загрузка'));
+        self.prepare(list);
     };
 
     self.fillCourses = function (list, facultyId) {
-        list.empty();
-        list.append(self.createDropItem('glyphicon-hourglass', 'Загрузка'));
+        self.prepare(list);
     };
 
     self.fillGroups = function (list, courseId) {
-        list.empty();
-        list.append(self.createDropItem('glyphicon-hourglass', 'Загрузка'));
+        self.prepare(list);
     };
 
     self.createDropItem = function (icon, string) {
         var ic = $('<span>').addClass('glyphicon ' + icon);
         return $('<li>').addClass('drop-item').append(ic, string);
     };
+
+    self.prepare = function (list) {
+        list.empty();
+        list.append(self.createDropItem('glyphicon-hourglass', 'Загрузка'));
+    };
+
+    self.render = function(list, data) {
+        list.empty();
+    }
 
 };
 
