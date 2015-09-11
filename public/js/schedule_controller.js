@@ -10,6 +10,19 @@ $(function () {
     var coursesList = $('#courses-list');
     var groupsList = $('#groups-list');
 
-    api.delegateControl(facultyList, coursesList, groupsList);
+    var content = $('#content');
+    showVoidWarn();
+
+    api.delegateControl(facultyList, coursesList, groupsList, function (scheduleId) {
+        console.log('Selected ' + scheduleId);
+    });
+
+    function showVoidWarn() {
+        content.empty();
+        var msg = $('<div>Schedule not selected</div>')
+            .css('font-size', '40px')
+            .addClass('label label-primary');
+        content.append(msg);
+    }
 
 });

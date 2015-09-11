@@ -17,6 +17,9 @@ body {
 .main {
     padding-bottom: 30px;
     min-height: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
 }
 
 .footer {
@@ -84,4 +87,5 @@ input[readonly] {
 .form-item-responsive {
     margin-bottom: 10px;
 }
+
 

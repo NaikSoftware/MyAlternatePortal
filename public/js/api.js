@@ -8,6 +8,7 @@ var API = function () {
     var path = '/get-schedule';
 
     self.delegateControl = function (facultiesList, coursesList, groupsList) {
+
         var menu =  $('.schedule-menu');
         var dropdowns = menu.find('.dropdown');
         menu.delegate('a', 'click', function () {
@@ -16,6 +17,7 @@ var API = function () {
             dropdowns.removeClass('open');
             $(this).parent('.dropdown').addClass('open');
         });
+
         initList(facultiesList, null, 'Факультет', '/faculties/');
         initList(coursesList, facultiesList, 'Курс', '/courses/');
         initList(groupsList, coursesList, 'Группа', '/groups/');
@@ -84,7 +86,7 @@ var API = function () {
     }
 
     function genWarning(text) {
-        var ic = $('<span>').addClass('glyphicon glyphicon-hand-left');
+        var ic = $('<span>').addClass('glyphicon glyphicon-hand-up');
         var text = $('<i class="text-info">' + text + '</i>');
         return $('<li>').addClass('drop-item').append(ic, ' Сначала выберите ', text);
     }
