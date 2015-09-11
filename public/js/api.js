@@ -5,43 +5,72 @@
 var API = function () {
 
     var self = this;
-    self.path = '/get-schedule';
+    var path = '/get-schedule';
 
-    self.fillFaculties = function (list) {
-        self.fill('/faculties/null', list);
-    };
-
-    self.fillCourses = function (list, facultyId) {
-        self.fill('/courses/' + facultyId, list);
-    };
-
-    self.fillGroups = function (list, courseId) {
-        self.fill('groups/' + courseId, list);
-    };
-
-    self.fill = function (query, list) {
-        list.empty();
-        list.append(self.createDropItem('glyphicon-hourglass', 'Загрузка'));
-        $.get(self.path + query).done(function (data) {
-            self.render(list, data);
-        }).fail(function (err) {
-            self.cancelFill(list, err)
+    self.delegateControl = function (facultiesList, coursesList, groupsList) {
+        initList(facultiesList, null, 'Факультет', '/faculties/');
+        initList(coursesList, facultiesList, 'Курс', '/courses/');
+        initList(groupsList, coursesList, 'Группа', '/groups/');
+        facultiesList.data('btn').click(function () {
+            fill(facultiesList);
         });
     };
 
-    self.createDropItem = function (icon, string) {
+    function fill(list, parentId) {
+        if (filled(list)) return;
+        list.empty();
+        list.append(createDropItem('glyphicon-hourglass', 'Загрузка'));
+        $.get(path + list.data('query') + parentId).done(function (data) {
+            render(list, data);
+            list.parents('.dropdown').delegate('li', 'click', function () {
+                var li = $(this);
+                list.data('btn').text(li.children().first().text())
+                    .append($('<span>').addClass('caret'));
+            });
+        }).fail(function (err) {
+            cancelFill(list, err)
+        });
+    }
+
+    function render(list, data) {
+        list.empty();
+        list.attr('aria-disabled', false);
+        data.forEach(function (elem) {
+            list.append(createDropItem('', elem.name).attr('id', elem._id));
+        });
+    }
+
+    function createDropItem(icon, string) {
         var ic = $('<span>').addClass('glyphicon ' + icon);
-        return $('<li>').addClass('drop-item').append(ic, string);
-    };
+        return $('<li>').addClass('drop-item').append($('<a>').append(ic, string).attr('href', '#'));
+    }
 
-    self.render = function (list, data) {
-        list.empty();
-    };
+    function cancelFill(list, err) {
+        alert('Data loading error, please, contact with administration: ' + err.responseText);
+    }
 
-    self.cancelFill = function (list, err) {
-        list.empty();
-        alert('Data loading error, please, contact with administration: ' + err);
-    };
+    function initList(list, prev, text, query) {
+        var btn = list.parents('.dropdown').find('.btn');
+        list.data('name', text)
+            .data('btn', btn)
+            .data('query', query);
+        btn.click(function () {
+            if (prev && !filled(prev)) {
+                list.empty();
+                list.append(genWarning(prev.data('name')));
+            }
+        });
+    }
+
+    function genWarning(text) {
+        var ic = $('<span>').addClass('glyphicon glyphicon-hand-left');
+        var text = $('<i class="text-info">' + text + '</i>');
+        return $('<li>').addClass('drop-item').append(ic, ' Сначала выберите ', text);
+    }
+
+    function filled(list) {
+        return list.attr('aria-disabled') === 'false';
+    }
 
 };
 

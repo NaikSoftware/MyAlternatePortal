@@ -23,6 +23,8 @@ module.exports = function GetSchedule(mongoose, mongoConn) {
                 if (!err && result) res.send(result);
                 else res.sendStatus(404);
             });
+        } else {
+            res.sendStatus(404);
         }
     });
 
