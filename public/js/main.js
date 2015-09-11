@@ -16,12 +16,10 @@ $(function () {
     });
 
     function login(pass) {
-        var data = {name: 'Admin', password: pass};
-        API.jsonQuery('/login', data)
-            .done(function (res) {
+        API.jsonQuery('/login', {name: 'Admin', password: pass})
+            .done(function () {
                 window.location.href = 'admin';
-            })
-            .error(showLoginError);
+            }).fail(showLoginError);
     }
 
     function showLoginError(err) {

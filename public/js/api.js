@@ -8,15 +8,25 @@ var API = function () {
     self.path = '/get-schedule';
 
     self.fillFaculties = function (list) {
-        self.prepare(list);
+        self.fill('/faculties/null', list);
     };
 
     self.fillCourses = function (list, facultyId) {
-        self.prepare(list);
+        self.fill('/courses/' + facultyId, list);
     };
 
     self.fillGroups = function (list, courseId) {
-        self.prepare(list);
+        self.fill('groups/' + courseId, list);
+    };
+
+    self.fill = function (query, list) {
+        list.empty();
+        list.append(self.createDropItem('glyphicon-hourglass', 'Загрузка'));
+        $.get(self.path + query).done(function (data) {
+            self.render(list, data);
+        }).fail(function (err) {
+            self.cancelFill(list, err)
+        });
     };
 
     self.createDropItem = function (icon, string) {
@@ -24,14 +34,14 @@ var API = function () {
         return $('<li>').addClass('drop-item').append(ic, string);
     };
 
-    self.prepare = function (list) {
+    self.render = function (list, data) {
         list.empty();
-        list.append(self.createDropItem('glyphicon-hourglass', 'Загрузка'));
     };
 
-    self.render = function(list, data) {
+    self.cancelFill = function (list, err) {
         list.empty();
-    }
+        alert('Data loading error, please, contact with administration: ' + err);
+    };
 
 };
 

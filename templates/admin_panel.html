@@ -1,5 +1,6 @@
 <%- include header.html             %>
 
+<script src="/js/admin_panel_controller.js"></script>
 <div class="panel panel-primary">
     <div class="panel-heading"><h4 class="text-center">Admin panel</h4></div>
     <div class="panel-body">
@@ -26,6 +27,7 @@
                             aria-expanded="false" id="faculties-button">
                         Факультет<span class="caret"></span>
                     </a>
+                    <ul class="dropdown-menu" role="menu" id="faculties-list" aria-disabled="true"></ul>
                 </div>
                 <input type="text" class="form-control" placeholder="Or input new">
                 </div>
@@ -35,10 +37,10 @@
                 <div class="input-group">
                 <div class="dropdown input-group-btn">
                     <a class="btn btn-info" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">
-                        Курс
-                        <span class="caret"></span>
+                            aria-expanded="false" id="courses-button">
+                        Курс<span class="caret"></span>
                     </a>
+                    <ul class="dropdown-menu" role="menu" id="courses-list" aria-disabled="true"></ul>
                 </div>
                 <input type="text" class="form-control" placeholder="Or input new">
                 </div>
@@ -48,12 +50,12 @@
                 <div class="input-group">
                 <div class="dropdown input-group-btn">
                     <a class="btn btn-info" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">
-                        Группа
-                        <span class="caret"></span>
+                            aria-expanded="false" id="groups-button">
+                        Группа<span class="caret"></span>
                     </a>
+                    <ul class="dropdown-menu" role="menu" id="groups-list" aria-disabled="true"></ul>
                 </div>
-                <input type="text" class="form-control" placeholder="Or input new"">
+                <input type="text" class="form-control" placeholder="Or input new">
                 </div>
             </div>
             </div>

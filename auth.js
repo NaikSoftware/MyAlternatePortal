@@ -26,5 +26,9 @@ module.exports = function Auth(mongoose, application) {
 };
 
 function strToHash(str) {
-    return crypto.createHash('md5').update(str).digest('hex');
+    try {
+        return crypto.createHash('md5').update(str).digest('hex');
+    } catch (e) {
+        return null;
+    }
 }

@@ -79,7 +79,8 @@ var App = function () {
             new (require('./routes/Index')),
             new (require('./routes/Login'))(self.authorization),
             new (require('./routes/Admin')),
-            new (require('./routes/Logout'))
+            new (require('./routes/Logout')),
+            new (require('./routes/GetSchedule'))(mongoose, self.mongoConn)
         ];
     };
 
