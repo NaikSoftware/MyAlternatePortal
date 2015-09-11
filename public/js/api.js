@@ -8,12 +8,22 @@ var API = function () {
     var path = '/get-schedule';
 
     self.delegateControl = function (facultiesList, coursesList, groupsList) {
+        var menu =  $('.schedule-menu');
+        var dropdowns = menu.find('.dropdown');
+        menu.delegate('a', 'click', function () {
+            return false;
+        }).find('.dropdown').delegate('a', 'click', function () {
+            dropdowns.removeClass('open');
+            $(this).parent('.dropdown').addClass('open');
+        });
         initList(facultiesList, null, 'Факультет', '/faculties/');
         initList(coursesList, facultiesList, 'Курс', '/courses/');
         initList(groupsList, coursesList, 'Группа', '/groups/');
-        facultiesList.data('btn').click(function () {
-            fill(facultiesList);
-        });
+        return self;
+    };
+
+    self.done = function (callback) {
+        self.callback = callback;
     };
 
     function fill(list, parentId) {
@@ -22,13 +32,23 @@ var API = function () {
         list.append(createDropItem('glyphicon-hourglass', 'Загрузка'));
         $.get(path + list.data('query') + parentId).done(function (data) {
             render(list, data);
-            list.parents('.dropdown').delegate('li', 'click', function () {
+            list.parents('.dropdown').delegate('li', 'click', function (e) {
                 var li = $(this);
                 list.data('btn').text(li.children().first().text())
                     .append($('<span>').addClass('caret'));
+
+                var next = list.data('next');
+                var selected = li.attr('id');
+                if (!next && self.callback) {
+                    self.callback(selected);
+                } else {
+                    next.parent().addClass('open');
+                    next.data('parentId', selected);
+                    fill(next, selected);
+                }
             });
         }).fail(function (err) {
-            cancelFill(list, err)
+            cancelFill(list, err);
         });
     }
 
@@ -55,11 +75,12 @@ var API = function () {
             .data('btn', btn)
             .data('query', query);
         btn.click(function () {
-            if (prev && !filled(prev)) {
+            if (prev && !filled(prev) || prev && !list.data('parentId')) {
                 list.empty();
                 list.append(genWarning(prev.data('name')));
-            }
+            } else fill(list, list.data('parentId'));
         });
+        if (prev) prev.data('next', list);
     }
 
     function genWarning(text) {
