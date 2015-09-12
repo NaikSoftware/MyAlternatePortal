@@ -12,6 +12,7 @@ body {
     background-color: hsl(34, 53%, 82%);
     background-image: url(../img/bg.jpg);
     background-position: center;
+    padding-top: 70px;
 }
 
 .main {
