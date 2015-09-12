@@ -13,9 +13,10 @@ $(function () {
     var content = $('#content');
     showVoidWarn();
 
-    api.delegateControl(facultyList, coursesList, groupsList, function (scheduleId) {
-        console.log('Selected ' + scheduleId);
-    });
+    api.delegateControl(facultyList, coursesList, groupsList)
+        .done(function (scheduleId) {
+            console.log('Selected ' + scheduleId);
+        });
 
     function showVoidWarn() {
         content.empty();

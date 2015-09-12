@@ -9,7 +9,7 @@ var API = function () {
 
     self.delegateControl = function (facultiesList, coursesList, groupsList) {
 
-        var menu =  $('.schedule-menu');
+        var menu = $('.schedule-menu');
         var dropdowns = menu.find('.dropdown');
         menu.delegate('a', 'click', function () {
             return false;
@@ -34,7 +34,7 @@ var API = function () {
         list.append(createDropItem('glyphicon-hourglass', 'Загрузка'));
         $.get(path + list.data('query') + parentId).done(function (data) {
             render(list, data);
-            list.parents('.dropdown').delegate('li', 'click', function (e) {
+            list.parents('.dropdown').on('click', 'li', function () {
                 var li = $(this);
                 list.data('btn').text(li.children().first().text())
                     .append($('<span>').addClass('caret'));
@@ -43,12 +43,13 @@ var API = function () {
                 var selected = li.attr('id');
                 if (!next && self.callback) {
                     self.callback(selected);
-                } else {
+                } else if (next) {
+                    resetNextLists(next);
                     next.parent().addClass('open');
                     next.data('parentId', selected);
                     fill(next, selected);
                 }
-            });
+            })
         }).fail(function (err) {
             cancelFill(list, err);
         });
@@ -98,6 +99,15 @@ var API = function () {
 
     function filled(list) {
         return list.attr('aria-disabled') === 'false';
+    }
+
+    function resetNextLists(next) {
+        if (!next) return;
+        next.data('btn').text(next.data('name')).append($('<span>').addClass('caret'));
+        next.parents('.dropdown').off('click', 'li');
+        next.data('parentId', null);
+        next.attr('aria-disabled', 'true');
+        resetNextLists(next.data('next'));
     }
 
 };
