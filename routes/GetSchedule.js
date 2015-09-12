@@ -29,16 +29,16 @@ module.exports = function GetSchedule(mongoose, mongoConn) {
             });
         } else if (type === 'courses') {
             res.send([
-                {_id: req.params.parent + ' 1', name: '1 курс'},
-                {_id: req.params.parent + ' 2', name: '2 курс'},
-                {_id: req.params.parent + ' 3', name: '3 курс'},
-                {_id: req.params.parent + ' 4', name: '4 курс'}
+                {_id: req.params.parent + '&1', name: '1 курс'},
+                {_id: req.params.parent + '&2', name: '2 курс'},
+                {_id: req.params.parent + '&3', name: '3 курс'},
+                {_id: req.params.parent + '&4', name: '4 курс'}
             ]);
         } else if (type === 'groups') {
-            var params = req.params.parent.split(' ');
+            var params = req.params.parent.split('&');
             if (params.length !== 2) res.sendStatus(400);
             else {
-                Group.find({facultyId: params[0], course: params[1]}, function (err, result) {
+                Group.find({facultyId: params[0], course: Number(params[1])}, function (err, result) {
                     if (!err && result.length > 0) res.send(result);
                     else res.sendStatus(404);
                 });
