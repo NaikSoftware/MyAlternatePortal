@@ -25,7 +25,7 @@ module.exports = function GetSchedule(mongoose, mongoConn) {
         if (type === 'faculties') {
             Faculty.find({}, function (err, result) {
                 if (!err && result) res.send(result);
-                else res.sendStatus(404);
+                else res.status(404).end();
             });
         } else if (type === 'courses') {
             res.send([
@@ -38,9 +38,10 @@ module.exports = function GetSchedule(mongoose, mongoConn) {
             var params = req.params.parent.split('&');
             if (params.length !== 2) res.sendStatus(400);
             else {
+                console.log({facultyId: params[0], course: Number(params[1])});
                 Group.find({facultyId: params[0], course: Number(params[1])}, function (err, result) {
                     if (!err && result.length > 0) res.send(result);
-                    else res.sendStatus(404);
+                    else res.status(404).end();
                 });
             }
         } else {
