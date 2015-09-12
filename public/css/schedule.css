@@ -1,3 +1,16 @@
+#content {
+    min-height: 100%;
+    text-align: center;
+}
+
+.main-message {
+    font-size: 25px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+}
+
 .day_col {
     width: 0.746cm;
 }
@@ -41,8 +54,15 @@
     }
 }
 
+.flex-container {
+    margin: -20px 0 0 -40px;
+}
 
-.flex-container { margin: -20px 0 0 -40px; }
-.flex-item > *{ margin: 0 0 0 20px; }    
-.flex-container > *{ margin: 20px 0 0 0; }
+.flex-item > * {
+    margin: 0 0 0 20px;
+}
+
+.flex-container > * {
+    margin: 20px 0 0 0;
+}
 

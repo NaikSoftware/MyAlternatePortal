@@ -2,7 +2,8 @@
     text-decoration: overline;
 }
 
-html {
+html, body, .main {
+    min-height: 100%;
     height: 100%;
 }
 
@@ -11,15 +12,10 @@ body {
     background-color: hsl(34, 53%, 82%);
     background-image: url(../img/bg.jpg);
     background-position: center;
-    height: 100%;
 }
 
 .main {
     padding-bottom: 30px;
-    min-height: 100%;
-    align-items: center;
-    display: flex;
-    justify-content: center;
 }
 
 .footer {
@@ -65,6 +61,7 @@ li[class=nav-item] {
     position: relative;
     overflow: hidden;
 }
+
 .btn-file input[type=file] {
     position: absolute;
     top: 0;
@@ -79,6 +76,7 @@ li[class=nav-item] {
     cursor: inherit;
     display: block;
 }
+
 input[readonly] {
     background-color: white !important;
     cursor: text !important;

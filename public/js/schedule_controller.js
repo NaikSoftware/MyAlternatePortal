@@ -20,8 +20,7 @@ $(function () {
     function showVoidWarn() {
         content.empty();
         var msg = $('<div>Schedule not selected</div>')
-            .css('font-size', '40px')
-            .addClass('label label-primary');
+            .addClass('label label-primary main-message');
         content.append(msg);
     }
 
