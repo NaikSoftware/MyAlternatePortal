@@ -64,11 +64,16 @@ var API = function () {
 
     function createDropItem(icon, string) {
         var ic = $('<span>').addClass('glyphicon ' + icon);
-        return $('<li>').addClass('drop-item').append($('<a>').append(ic, string).attr('href', '#'));
+        return $('<li>').addClass('drop-item').append($('<a>').append(ic, ' ', string).attr('href', '#'));
     }
 
     function cancelFill(list, err) {
-        alert('Data loading error, please, contact with administration: ' + err.responseText);
+        if (err.status === 404) {
+            list.empty().append(createDropItem('glyphicon-alert', 'Ничего нет'));
+        } else {
+            console.log(err);
+            alert('Getting information error: ' + err.responseText);
+        }
     }
 
     function initList(list, prev, text, query) {

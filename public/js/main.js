@@ -42,8 +42,6 @@ $(function () {
         var input = $(this).parents('.input-group').find(':text'),
             log = numFiles > 1 ? numFiles + ' files selected' : label;
 
-        console.log(input, log);
-
         if (input.length) {
             input.val(log);
         } else {

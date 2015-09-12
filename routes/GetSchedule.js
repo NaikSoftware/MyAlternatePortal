@@ -13,16 +13,34 @@ module.exports = function GetSchedule(mongoose, mongoConn) {
     var Schema = mongoose.Schema;
 
     var facultySchema = new Schema({name: String});
+    var courseSchema = new Schema({name: String, facultyId: String});
+    var groupSchema = new Schema({name: String,});
+
     var Faculty = mongoConn.model('faculties', facultySchema);
+    var Course = mongoConn.model('courses', courseSchema);
 
     self.addHandler(function (req, res) {
         res.setHeader('Content-Type', 'application/json');
         console.dir(req.params);
-        if (req.params.type === 'faculties') {
+        var type = req.params.type;
+        if (type === 'faculties') {
             Faculty.find({}, function (err, result) {
                 if (!err && result) res.send(result);
                 else res.sendStatus(404);
             });
+        } else if (type === 'courses') {
+            res.send([
+                {_id: req.params.parent + ' 1', name: '1 курс'},
+                {_id: req.params.parent + ' 2', name: '2 курс'},
+                {_id: req.params.parent + ' 3', name: '3 курс'},
+                {_id: req.params.parent + ' 4', name: '4 курс'}
+            ]);
+        } else if (type === 'groups') {
+            var params = req.params.parent.split(' ');
+            if (params.length !== 2) res.sendStatus(400);
+            else {
+                res.sendStatus(404);
+            }
         } else {
             res.sendStatus(404);
         }

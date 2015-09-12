@@ -10,8 +10,6 @@ $(function () {
     var coursesList = $('#courses-list');
     var groupsList = $('#groups-list');
 
-    $('.main').css('align-items', 'flex-start');
-
     api.delegateControl(facultyList, coursesList, groupsList);
 
 });
