@@ -2,20 +2,16 @@ $(function () {
 
     /* Initialize */
 
-    $('#btn_login').click(function () {
-        var pass = $('#pass').val();
-        login(pass);
-    });
+    $('#btn_login').click(login);
 
-    $('#btn_logout').click(function () {
-        logout();
-    });
+    $('#btn_logout').click(logout);
 
     $('#btn_admin_panel').click(function () {
         window.location.href = 'admin';
     });
 
-    function login(pass) {
+    function login() {
+        var pass = $('#pass').val();
         API.jsonQuery('/login', {name: 'Admin', password: pass})
             .done(function () {
                 window.location.href = 'admin';
