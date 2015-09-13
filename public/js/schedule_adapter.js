@@ -2,12 +2,14 @@
  * Created by SecretLabs on 10.09.15.
  */
 
-var ScheduleSelector = function () {
+var ScheduleAdapter = function () {
 
     var self = this;
-    var path = '/get-schedule';
 
-    self.delegateControl = function (facultiesList, coursesList, groupsList) {
+    self.lists = function (facultiesList, coursesList, groupsList) {
+        self.facultiesList = facultiesList;
+        self.coursesList = coursesList;
+        self.groupsList = groupsList;
 
         var menu = $('.schedule-menu');
         var dropdowns = menu.find('.dropdown');
@@ -18,9 +20,16 @@ var ScheduleSelector = function () {
             $(this).parent('.dropdown').addClass('open'); // open selected
         });
 
-        initList(facultiesList, null, 'Факультет', '/faculties/');
-        initList(coursesList, facultiesList, 'Курс', '/courses/');
-        initList(groupsList, coursesList, 'Группа', '/groups/');
+        initList(facultiesList, null, 'Факультет');
+        initList(coursesList, facultiesList, 'Курс');
+        initList(groupsList, coursesList, 'Группа');
+        return self;
+    };
+
+    self.providers = function (faculties, courses, groups) {
+        self.facultiesList.provider = faculties;
+        self.coursesList.provider = courses;
+        self.groupsList.provider = groups;
         return self;
     };
 
@@ -32,7 +41,7 @@ var ScheduleSelector = function () {
         if (filled(list)) return;
         list.empty();
         list.append(createDropItem('glyphicon-hourglass', 'Загрузка'));
-        $.get(path + list.data('query') + parentId).done(function (data) {
+        list.provider(parentId).done(function (data) {
             render(list, data);
             list.parents('.dropdown').on('click', 'li', function () {
                 var li = $(this);
@@ -76,11 +85,10 @@ var ScheduleSelector = function () {
         }
     }
 
-    function initList(list, prev, name, query) {
+    function initList(list, prev, name) {
         var btn = list.parents('.dropdown').find('.btn');
         list.data('name', name)
             .data('btn', btn)
-            .data('query', query)
             .data('prev', prev);
         btn.click(function () {
             if (prev && !filled(prev) || prev && !list.data('parentId')) { // list not ready for filling

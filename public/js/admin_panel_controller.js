@@ -4,7 +4,7 @@
 
 $(function () {
 
-    var scheduleSelector = new ScheduleSelector();
+    var scheduleAdapter = new ScheduleAdapter();
 
     var facultyList = $('#faculties-list');
     var coursesList = $('#courses-list');
@@ -14,7 +14,8 @@ $(function () {
     var newCourse = $('#new-course');
     var newGroup = $('#new-group');
 
-    scheduleSelector.delegateControl(facultyList, coursesList, groupsList);
+    scheduleAdapter.lists(facultyList, coursesList, groupsList)
+        .providers(api.getFaculties, api.getCourses, api.getGroups);
 
     trigger(facultyList, newFaculty);
     trigger(coursesList, newCourse);

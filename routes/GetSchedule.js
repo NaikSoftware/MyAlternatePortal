@@ -41,8 +41,7 @@ module.exports = function GetSchedule(mongoose, mongoConn) {
             var params = req.params.parent.split('&');
             if (params.length !== 2) res.status(400).end();
             else {
-                console.log({facultyId: params[0], course: Number(params[1])});
-                Group.find({facultyId: params[0], course: Number(params[1])}, function (err, result) {
+                Group.find({facultyId: params[0], course: params[1]}, function (err, result) {
                     if (!err && result.length > 0) res.send(result);
                     else res.status(404).end();
                 });
