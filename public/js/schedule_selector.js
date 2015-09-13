@@ -80,7 +80,8 @@ var ScheduleSelector = function () {
         var btn = list.parents('.dropdown').find('.btn');
         list.data('name', name)
             .data('btn', btn)
-            .data('query', query);
+            .data('query', query)
+            .data('prev', prev);
         btn.click(function () {
             if (prev && !filled(prev) || prev && !list.data('parentId')) { // list not ready for filling
                 showWarning(list, prev);
@@ -107,5 +108,4 @@ var ScheduleSelector = function () {
         next.attr('aria-disabled', 'true');
         resetNextLists(next.data('next'));
     }
-
 };

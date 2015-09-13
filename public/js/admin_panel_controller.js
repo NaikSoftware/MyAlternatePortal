@@ -10,6 +10,30 @@ $(function () {
     var coursesList = $('#courses-list');
     var groupsList = $('#groups-list');
 
+    var newFaculty = $('#new-faculty');
+    var newCourse = $('#new-course');
+    var newGroup = $('#new-group');
+
     scheduleSelector.delegateControl(facultyList, coursesList, groupsList);
+
+    trigger(facultyList, newFaculty);
+    trigger(coursesList, newCourse);
+    trigger(groupsList, newGroup);
+
+    function trigger(list, input) {
+        list.data('input', input);
+        input.keyup(function () {
+            if (list.data('prev') && list.data('prev').data('btn').hasClass('disabled')) return;
+            setDisabledNext(list, input.val() !== '');
+        });
+    }
+
+    function setDisabledNext(list, disabled) {
+        if (!list) return;
+
+        if (list.data('input').val() !== '' || disabled) list.data('btn').addClass('disabled');
+        else list.data('btn').removeClass('disabled');
+        setDisabledNext(list.data('next'), disabled);
+    }
 
 });
