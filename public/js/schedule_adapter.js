@@ -6,6 +6,9 @@ var ScheduleAdapter = function () {
 
     var self = this;
 
+    /**
+     * Params - JQuery wrapped tags UL. Must be wrapped to .dropdown Bootstrap classes
+     */
     self.lists = function (facultiesList, coursesList, groupsList) {
         self.facultiesList = facultiesList;
         self.coursesList = coursesList;
@@ -26,6 +29,10 @@ var ScheduleAdapter = function () {
         return self;
     };
 
+    /**
+     * Params - function with parameter "parentId". Must return object with functions
+     * .done(data) and .fail(error)
+     */
     self.providers = function (faculties, courses, groups) {
         self.facultiesList.provider = faculties;
         self.coursesList.provider = courses;
@@ -33,6 +40,9 @@ var ScheduleAdapter = function () {
         return self;
     };
 
+    /**
+     * Called when schedule was selected
+     */
     self.done = function (callback) {
         self.callback = callback;
     };
