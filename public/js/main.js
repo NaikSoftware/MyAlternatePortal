@@ -12,9 +12,9 @@ $(function () {
 
     function login() {
         var pass = $('#pass').val();
-        API.jsonQuery('/login', {name: 'Admin', password: pass})
+        Helper.jsonQuery('/login', {name: 'Admin', password: pass})
             .done(function () {
-                window.location.href = 'admin';
+                window.location.href = '/admin';
             }).fail(showLoginError);
     }
 
@@ -51,5 +51,18 @@ $(function () {
     });
 
 });
+
+/* Helper */
+var Helper = {
+    jsonQuery: function (path, obj) {
+        return $.ajax({
+            url: path,
+            type: 'POST',
+            data: JSON.stringify(obj),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json'
+        });
+    }
+};
 
 

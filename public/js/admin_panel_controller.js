@@ -4,12 +4,12 @@
 
 $(function () {
 
-    var api = new API();
+    var scheduleSelector = new ScheduleSelector();
 
     var facultyList = $('#faculties-list');
     var coursesList = $('#courses-list');
     var groupsList = $('#groups-list');
 
-    api.delegateControl(facultyList, coursesList, groupsList);
+    scheduleSelector.delegateControl(facultyList, coursesList, groupsList);
 
 });

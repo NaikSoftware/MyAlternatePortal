@@ -4,7 +4,7 @@
 
 $(function () {
 
-    var api = new API();
+    var scheduleSelector = new ScheduleSelector();
 
     var facultyList = $('#faculties-list');
     var coursesList = $('#courses-list');
@@ -13,7 +13,7 @@ $(function () {
     var content = $('#content');
     showVoidWarn();
 
-    api.delegateControl(facultyList, coursesList, groupsList)
+    scheduleSelector.delegateControl(facultyList, coursesList, groupsList)
         .done(function (scheduleId) {
             console.log('Selected ' + scheduleId);
         });

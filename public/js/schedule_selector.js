@@ -2,7 +2,7 @@
  * Created by SecretLabs on 10.09.15.
  */
 
-var API = function () {
+var ScheduleSelector = function () {
 
     var self = this;
     var path = '/get-schedule';
@@ -110,14 +110,4 @@ var API = function () {
         resetNextLists(next.data('next'));
     }
 
-};
-
-API.jsonQuery = function (path, obj) {
-    return $.ajax({
-        url: path,
-        type: 'POST',
-        data: JSON.stringify(obj),
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json'
-    });
 };
