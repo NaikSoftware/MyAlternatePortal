@@ -16,10 +16,6 @@ function API() {
         return $.get(path + '/courses/' + facultyId);
     };
 
-    self.getAllCourses = function () {
-        return $.get(path + '/courses/all');
-    };
-
     self.getGroups = function (facultyAndCourse) {
         return $.get(path + '/groups/' + facultyAndCourse);
     };

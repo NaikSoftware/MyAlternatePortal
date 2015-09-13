@@ -16,6 +16,8 @@ var ScheduleAdapter = function () {
 
         var menu = $('.schedule-menu');
         var dropdowns = menu.find('.dropdown');
+        dropdowns.attr('aria-disabled', 'true');
+
         menu.delegate('a', 'click', function () {
             return false;                                 // prevent default behavior
         }).find('.dropdown').delegate('a', 'click', function () {

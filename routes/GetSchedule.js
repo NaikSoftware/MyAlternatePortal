@@ -13,36 +13,39 @@ module.exports = function GetSchedule(mongoose, mongoConn) {
     var Schema = mongoose.Schema;
 
     var facultySchema = new Schema({name: String});
-    var groupSchema = new Schema({name: String, facultyId: String, course: Number});
+    var courseSchema = new Schema({facultyId: String, name: String});
+    var groupSchema = new Schema({name: String, facultyId: String, courseId: String});
 
     var Faculty = mongoConn.model('faculties', facultySchema);
+    var Course = mongoConn.model('courses', courseSchema);
     var Group = mongoConn.model('groups', groupSchema);
 
     self.addHandler(function (req, res) {
         res.setHeader('Content-Type', 'application/json');
-        console.dir(req.params);
         var type = req.params.type;
 
         if (type === 'faculties') {
             Faculty.find({}, function (err, result) {
-                if (!err && result) res.send(result);
+                if (checkResult(err, result)) res.send(result);
                 else res.status(404).end();
             });
 
         } else if (type === 'courses') {
-            res.send([
-                {_id: req.params.parent + '&1', name: '1 курс'},
-                {_id: req.params.parent + '&2', name: '2 курс'},
-                {_id: req.params.parent + '&3', name: '3 курс'},
-                {_id: req.params.parent + '&4', name: '4 курс'}
-            ]);
+            Course.find({facultyId: req.params.parent}).lean().exec(function (err, result) {
+                if (checkResult(err, result)) {
+                    result.forEach(function (course) {
+                        course._id = req.params.parent + '&' + course._id;
+                    });
+                    res.send(result);
+                } else res.status(404).end();
+            });
 
         } else if (type === 'groups') {
             var params = req.params.parent.split('&');
             if (params.length !== 2) res.status(400).end();
             else {
-                Group.find({facultyId: params[0], course: params[1]}, function (err, result) {
-                    if (!err && result.length > 0) res.send(result);
+                Group.find({facultyId: params[0], courseId: params[1]}, function (err, result) {
+                    if (checkResult(err, result)) res.send(result);
                     else res.status(404).end();
                 });
             }
@@ -51,5 +54,9 @@ module.exports = function GetSchedule(mongoose, mongoConn) {
             res.status(404).end();
         }
     });
+
+    function checkResult(err, result) {
+        return !err && result && result.length > 0;
+    }
 
 };
