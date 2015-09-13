@@ -14,7 +14,7 @@ module.exports = function AdminPanel() {
         if (typeof req.session.logined != 'undefined') {
             res.send(self.getTemplate('admin_panel.html')(res.locals.data));
         } else {
-            res.sendStatus(403);
+            res.status(403).end();
         }
     });
 

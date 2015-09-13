@@ -17,7 +17,7 @@ module.exports = function Login(auth) {
                 req.session.logined = true;
                 res.send('{}');
             } else {
-                res.sendStatus(403);
+                res.status(403).end();
             }
         });
     });

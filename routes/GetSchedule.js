@@ -22,11 +22,13 @@ module.exports = function GetSchedule(mongoose, mongoConn) {
         res.setHeader('Content-Type', 'application/json');
         console.dir(req.params);
         var type = req.params.type;
+
         if (type === 'faculties') {
             Faculty.find({}, function (err, result) {
                 if (!err && result) res.send(result);
                 else res.status(404).end();
             });
+
         } else if (type === 'courses') {
             res.send([
                 {_id: req.params.parent + '&1', name: '1 курс'},
@@ -34,9 +36,10 @@ module.exports = function GetSchedule(mongoose, mongoConn) {
                 {_id: req.params.parent + '&3', name: '3 курс'},
                 {_id: req.params.parent + '&4', name: '4 курс'}
             ]);
+
         } else if (type === 'groups') {
             var params = req.params.parent.split('&');
-            if (params.length !== 2) res.sendStatus(400);
+            if (params.length !== 2) res.status(400).end();
             else {
                 console.log({facultyId: params[0], course: Number(params[1])});
                 Group.find({facultyId: params[0], course: Number(params[1])}, function (err, result) {
@@ -44,8 +47,9 @@ module.exports = function GetSchedule(mongoose, mongoConn) {
                     else res.status(404).end();
                 });
             }
+
         } else {
-            res.sendStatus(404);
+            res.status(404).end();
         }
     });
 
