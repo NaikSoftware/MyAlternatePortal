@@ -3,6 +3,7 @@
  */
 
 var Route = require('./route');
+var schemas = require('../schemas');
 
 module.exports = function GetSchedule(mongoose, mongoConn) {
     var self = this;
@@ -12,9 +13,9 @@ module.exports = function GetSchedule(mongoose, mongoConn) {
 
     var Schema = mongoose.Schema;
 
-    var facultySchema = new Schema({name: String});
-    var courseSchema = new Schema({facultyId: String, name: String});
-    var groupSchema = new Schema({name: String, facultyId: String, courseId: String});
+    var facultySchema = new Schema(schemas.faculty);
+    var courseSchema = new Schema(schemas.course);
+    var groupSchema = new Schema(schemas.group);
 
     var Faculty = mongoConn.model('faculties', facultySchema);
     var Course = mongoConn.model('courses', courseSchema);
