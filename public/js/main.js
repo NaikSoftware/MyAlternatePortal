@@ -39,6 +39,15 @@ $(function () {
 
     $('.btn-file :file').on('fileselect', function (event, numFiles, label) {
 
+        var ext = label.substring(label.indexOf('.'));
+        var exts = $(this).attr('datatype').split('/\s+/g');
+        if (exts && exts.length > 0) {
+            if ($.inArray(ext, exts) === -1) {
+                alert('File type ' + ext + ' not supported');
+                return;
+            }
+        }
+
         var input = $(this).parents('.input-group').find(':text'),
             log = numFiles > 1 ? numFiles + ' files selected' : label;
 

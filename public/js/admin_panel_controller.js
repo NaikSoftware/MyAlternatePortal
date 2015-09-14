@@ -37,9 +37,16 @@ $(function () {
         setDisabledNext(list.data('next'), disabled);
     }
 
-    $('[type=submit]').click(function () {
-        var form = $('form');
-        console.log(form.serializeArray());
+    var form = $('form');
+    var file = $(':file');
+
+    form.on('submit', function (e) {
+        e.preventDefault();
+    });
+
+    file.change(function () {
+        var file = this.files[0];
+
     });
 
 });

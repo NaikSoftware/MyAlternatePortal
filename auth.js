@@ -12,7 +12,7 @@ module.exports = function Auth(application) {
         store: new MongoStore({mongooseConnection: application.models.connection})
     }));
 
-    Auth.prototype.check = function (login, pass, handler) {
+    this.check = function (login, pass, handler) {
         application.models.User.findOne({name: 'Admin', password: strToHash(pass)}, function (err, result) {
             handler(!err && result);
         });
