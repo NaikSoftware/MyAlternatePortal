@@ -3,7 +3,6 @@
  */
 
 var Route = require('./route');
-var schemas = require('../models');
 
 module.exports = function SaveSchedule(models) {
     var self = this;
