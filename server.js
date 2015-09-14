@@ -3,6 +3,7 @@
 var express = require('express');
 var mongoose = require('mongoose');
 
+var Models = require('./models');
 var Auth = require('./auth');
 
 
@@ -80,7 +81,8 @@ var App = function () {
             new (require('./routes/Login'))(self.authorization),
             new (require('./routes/Admin')),
             new (require('./routes/Logout')),
-            new (require('./routes/GetSchedule'))(mongoose, self.mongoConn)
+            new (require('./routes/GetSchedule'))(self.models),
+            new (require('./routes/SaveSchedule'))(self.models)
         ];
     };
 
@@ -94,11 +96,17 @@ var App = function () {
         self.app.use(require('body-parser').json());
 
         // Setup connection to MongoDB
-        self.mongoConn = mongoose.createConnection(self.mongo_str);
+        mongoose.connect(self.mongo_str);
+        mongoose.connection.on('connected', self.onConnectedToDB);
+    };
+
+
+    self.onConnectedToDB = function () {
         console.log('Connected to ' + self.mongo_str);
+        self.models = new Models(mongoose);
 
         // Setup authorization
-        self.authorization = new Auth(mongoose, self);
+        self.authorization = new Auth(self);
 
         //  Add handlers for the app (from the routes).
         self.getRoutes().forEach(function (route) {

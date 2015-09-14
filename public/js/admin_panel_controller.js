@@ -37,4 +37,9 @@ $(function () {
         setDisabledNext(list.data('next'), disabled);
     }
 
+    $('[type=submit]').click(function () {
+        var form = $('form');
+        console.log(form.serializeArray());
+    });
+
 });
