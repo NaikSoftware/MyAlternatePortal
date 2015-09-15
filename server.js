@@ -112,7 +112,6 @@ var App = function () {
 
         //  Add handlers for the app (from the routes).
         self.getRoutes().forEach(function (route) {
-            //console.dir(route);
             if (route.method === 'GET') self.app.get(route.path, route.handlers);
             else if (route.method === 'POST') self.app.post(route.path, route.handlers);
             else self.app.all(route.path, route.handlers);

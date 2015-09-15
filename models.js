@@ -19,6 +19,4 @@ module.exports = function Models(mongoose) {
 
     this.connection = mongoose.connection;
 
-    return this;
-
 };
