@@ -70,7 +70,9 @@ $(function () {
         if (file) formData.append('schedule-file', file);
         else return warning('File not selected');
 
-
+        if (newFaculty.val().trim() !== '') formData.append('newfac', newFaculty.val().trim());
+        else if (facultyList.find('.active')[0] === undefined) return warning('Faculty not selected');
+        else formData.append('fac', facultyList.find('.active')[0].id);
 
         return formData;
     }
