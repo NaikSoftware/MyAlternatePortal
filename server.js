@@ -2,6 +2,7 @@
 //  OpenShift Node application
 var express = require('express');
 var mongoose = require('mongoose');
+var multer = require('multer');
 
 var Models = require('./models');
 var Auth = require('./auth');
@@ -94,6 +95,7 @@ var App = function () {
         self.app = express();
         self.app.use(express.static('public'));
         self.app.use(require('body-parser').json());
+        self.app.use(multer().single('schedule-file'));
 
         // Setup connection to MongoDB
         mongoose.connect(self.mongo_str);

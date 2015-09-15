@@ -38,15 +38,44 @@ $(function () {
     }
 
     var form = $('form');
-    var file = $(':file');
+    var file;
+    $(':file').change(function () {
+        file = this.files[0];
+    });
 
     form.on('submit', function (e) {
         e.preventDefault();
+
+        var data = getFormData();
+        if (!data) return;
+
+        $.ajax({
+            url: '/save-schedule',
+            type: 'POST',
+            data: data,
+            enctype: 'multipart/form-data',
+            processData: false,   // tell jQuery not to process the data
+            contentType: false   // tell jQuery not to set contentType
+        }).done(function (res) {
+            alert('Upload complete!');
+            window.location.href = '/admin';
+        }).fail(function (err) {
+            alert('Upload error: ' + err.responseText);
+        });
     });
 
-    file.change(function () {
-        var file = this.files[0];
+    function getFormData() {
+        var formData = new FormData();
 
-    });
+        if (file) formData.append('schedule-file', file);
+        else return warning('File not selected');
+
+        return formData;
+    }
+
+    function warning(text) {
+        alert(text);
+        return false;
+    }
 
 });

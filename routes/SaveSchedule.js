@@ -20,6 +20,9 @@ module.exports = function SaveSchedule(models) {
 
         var data = req.body.data;
 
+        console.dir(req.file);
+        res.send('{}');
+
     });
 
     function checkResult(err, result) {
