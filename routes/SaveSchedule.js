@@ -17,9 +17,7 @@ module.exports = function SaveSchedule(models) {
             return;
         }
 
-        var data = req.body.data;
-
-        console.dir(req.file);
+        console.dir(req.body);
         res.send('{}');
 
     });

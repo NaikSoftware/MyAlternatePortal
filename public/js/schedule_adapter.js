@@ -57,6 +57,8 @@ var ScheduleAdapter = function () {
             render(list, data);
             list.parents('.dropdown').on('click', 'li', function () {
                 var li = $(this);
+                list.children('li').removeClass('active');
+                li.addClass('active');
                 list.data('btn').text(li.children().first().text())
                     .append($('<span>').addClass('caret'));
 
