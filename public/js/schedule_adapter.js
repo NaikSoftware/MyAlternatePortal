@@ -59,8 +59,7 @@ var ScheduleAdapter = function () {
                 var li = $(this);
                 list.children('li').removeClass('active');
                 li.addClass('active');
-                list.data('btn').text(li.children().first().text())
-                    .append($('<span>').addClass('caret'));
+                list.data('btn').text(li.text()).append($('<span>').addClass('caret'));
 
                 var next = list.data('next');
                 var selected = li.attr('id');
@@ -93,7 +92,9 @@ var ScheduleAdapter = function () {
 
     function cancelFill(list, err) {
         if (err.status === 404) {
-            list.empty().append(createDropItem('glyphicon-alert', 'Ничего нет'));
+            list.empty()
+                .append($('<li>').addClass('drop-item')
+                    .append($('<span>').addClass('glyphicon glyphicon-alert'), ' ', 'Ничего нет'));
         } else {
             alert('Getting information error: ' + err.responseText);
         }
@@ -106,13 +107,13 @@ var ScheduleAdapter = function () {
             .data('prev', prev);
         btn.click(function () {
             if (prev && !filled(prev) || prev && !list.data('parentId')) { // list not ready for filling
-                showWarning(list, prev);
+                prevRequired(list, prev);
             } else fill(list, list.data('parentId'));
         });
         if (prev) prev.data('next', list);
     }
 
-    function showWarning(list, prev) {
+    function prevRequired(list, prev) {
         list.empty().append($('<li>').addClass('drop-item')
             .append($('<span>').addClass('glyphicon glyphicon-hand-up'))
             .append(' Сначала выберите ').append($('<i class="text-info">' + prev.data('name') + '</i>')));
