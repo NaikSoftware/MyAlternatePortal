@@ -23,10 +23,14 @@ module.exports = function SaveSchedule(models) {
             return;
         }
 
-        console.dir(req.body);
-        converter(req.file);
-        res.send('{}');
-
+        try {
+            var weeks = converter(req.file);
+            console.log(JSON.stringify(weeks));
+            res.send('{}');
+        } catch(e) {
+            console.log(e);
+            res.status(422).send(e.message);
+        }
     });
 
     function checkResult(err, result) {
