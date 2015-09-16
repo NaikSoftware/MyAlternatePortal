@@ -25,7 +25,7 @@ module.exports = function SaveSchedule(models) {
 
         try {
             var weeks = converter(req.file);
-            console.log(JSON.stringify(weeks));
+            console.log(JSON.stringify(weeks, null, 4));
             res.send('{}');
         } catch(e) {
             console.log(e);
