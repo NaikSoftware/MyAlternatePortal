@@ -30,6 +30,8 @@ module.exports = function Route(method, path) {
         }
     };
 
+    self.setup = function () {}
+
 };
 
 module.exports.extend = function (Child) {

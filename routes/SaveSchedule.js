@@ -3,12 +3,17 @@
  */
 
 var Route = require('./route');
+var multer = require('multer');
 
 module.exports = function SaveSchedule(models) {
     var self = this;
 
     Route.extend(SaveSchedule);
     Route.call(this, 'POST', '/save-schedule');
+
+    self.setup = function (app) {
+        app.use(multer().single('schedule-file'));
+    };
 
     self.addHandler(function (req, res) {
         res.setHeader('Content-Type', 'application/json');
