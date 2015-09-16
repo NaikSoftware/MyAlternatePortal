@@ -4,6 +4,7 @@
 
 var Route = require('./route');
 var multer = require('multer');
+var converter = require('../converter');
 
 module.exports = function SaveSchedule(models) {
     var self = this;
@@ -23,6 +24,7 @@ module.exports = function SaveSchedule(models) {
         }
 
         console.dir(req.body);
+        converter(req.file);
         res.send('{}');
 
     });
