@@ -20,7 +20,8 @@ var ScheduleAdapter = function () {
 
         menu.delegate('a', 'click', function () {
             return false;                                 // prevent default behavior
-        }).find('.dropdown').delegate('a', 'click', function () {
+        });
+        dropdowns.delegate('a', 'click', function () {
             dropdowns.removeClass('open');                // close all
             $(this).parent('.dropdown').addClass('open'); // open selected
         });

@@ -69,8 +69,6 @@ var Helper = {
             type: 'POST',
             data: JSON.stringify(obj),
             contentType: 'application/json; charset=utf-8',
-            processData: false,   // tell jQuery not to process the data
-            //contentType: false,   // tell jQuery not to set contentType
             dataType: 'json'
         });
     }
