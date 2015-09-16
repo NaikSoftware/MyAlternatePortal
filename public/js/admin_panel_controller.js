@@ -4,6 +4,7 @@
 
 $(function () {
 
+    var waiting = $('#waiting');
     var scheduleAdapter = new ScheduleAdapter();
 
     var facultyList = $('#faculties-list');
@@ -49,7 +50,8 @@ $(function () {
         var data = getFormData();
         if (!data) return;
 
-        $.ajax({
+        waiting.css({'opacity': 1, 'z-index': 1000});
+        var xhr = $.ajax({
             url: '/save-schedule',
             type: 'POST',
             data: data,
@@ -61,6 +63,8 @@ $(function () {
             window.location.href = '/admin';
         }).fail(function (err) {
             alert('Upload error: ' + err.responseText);
+        }).always(function () {
+            waiting.css({'opacity': 0, 'z-index': -1})
         });
     });
 
