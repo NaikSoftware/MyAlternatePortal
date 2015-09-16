@@ -28,6 +28,13 @@ $(function () {
             if (list.data('prev') && list.data('prev').data('btn').hasClass('disabled')) return;
             setDisabledNext(list, input.val() !== '');
         });
+        list.getResult = function () {
+            var newName = input.val().trim();
+            var selected = list.find('.active')[0];
+            if (newName !== '')  return JSON.stringify({val: newName, type: 'new'});
+            else if (selected === undefined) return null;
+            else return JSON.stringify({val: selected.id});
+        }
     }
 
     function setDisabledNext(list, disabled) {
@@ -72,17 +79,26 @@ $(function () {
         var formData = new FormData();
 
         if (file) formData.append('schedule-file', file);
-        else return warning('File not selected');
+        else return notSelected('File');
 
-        if (newFaculty.val().trim() !== '') formData.append('newfac', newFaculty.val().trim());
-        else if (facultyList.find('.active')[0] === undefined) return warning('Faculty not selected');
-        else formData.append('fac', facultyList.find('.active')[0].id);
+        var selected = facultyList.getResult();
+        if (selected) formData.append('faculty', selected);
+        else return notSelected(facultyList);
+
+        selected = coursesList.getResult();
+        if (selected) formData.append('course', selected);
+        else return notSelected(coursesList);
+
+        selected = groupsList.getResult();
+        if (selected) formData.append('group', selected);
+        else return notSelected(groupsList);
 
         return formData;
     }
 
-    function warning(text) {
-        alert(text);
+    function notSelected(obj) {
+        var name = (typeof obj == 'string') ? obj : obj.data('name');
+        alert(name + ' not selected');
         return false;
     }
 
