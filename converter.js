@@ -98,7 +98,7 @@ module.exports = function (file) {
         if (!cell) return null;
 
         var date = moment(cell.v, 'DD.MM.YY').add(3, 'h');
-        if (date.isValid()) return date;
+        if (cell.v.split('.').length === 3 && date.isValid()) return date;
         else return null;
     }
 
