@@ -3,6 +3,7 @@
  */
 
 var XLSX = require('xlsx');
+var moment = require('moment');
 
 const MAX_SKIP_Y = 30;
 const MAX_WEEKS = 30;
@@ -96,9 +97,9 @@ module.exports = function (file) {
         var cell = sheet[toAddr(c, r)];
         if (!cell) return null;
 
-        var arr = cell.v.split('.');
-        if (arr.length !== 3) return null;
-        return new Date('20' + arr[2], arr[1], arr[0]);
+        var date = moment(cell.v, 'DD.MM.YY').add(3, 'h');
+        if (date.isValid()) return date;
+        else return null;
     }
 
     function dayName(c, r) {
@@ -112,7 +113,7 @@ module.exports = function (file) {
         var skipped = 0;
         while (true) {
             var cell = sheet['A' + (startRow + (++skipped))];
-            if (skipped > MAX_SKIP_Y) return startRow;
+            if (skipped > MAX_SKIP_Y) throw new Error('Empty rows limit exceeded');
             if (!cell) continue;
             if (cell.t === 'n') break; // find first row with lecture number (cell type 'n')
         }
