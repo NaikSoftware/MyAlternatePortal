@@ -53,35 +53,36 @@ module.exports = function SaveSchedule(models) {
                 convert(gr);
             });
         }
+		
+		function convert(group) {
+       	 	try {
+           		var weeks = converter(req.file);
+            	weeks.forEach(function (week) {
+                	//week.groupId =
+                	//new models.Schedule(week).save();
+            	});
+            	res.status(200).end();
+        	} catch (e) {
+            	console.log(e);
+            	res.status(422).send(e.message);
+        	}
+    	}
+
+    	function checkResult(err, result) {
+        	return !err && result && result.length > 0;
+    	}
+
+    	function checkQuery(body) {
+        	return req.file
+            	&& checkVar(body.faculty)
+            	&& checkVar(body.course)
+            	&& checkVar(body.group);
+    	}
+
+    	function checkVar(v) {
+        	return v && v.val;
+    	}
+	
     });
-
-    function convert(group) {
-        try {
-            var weeks = converter(req.file);
-            weeks.forEach(function (week) {
-                //week.groupId =
-                //new models.Schedule(week).save();
-            });
-            res.send('{}');
-        } catch (e) {
-            console.log(e);
-            res.status(422).send(e.message);
-        }
-    }
-
-    function checkResult(err, result) {
-        return !err && result && result.length > 0;
-    }
-
-    function checkQuery(body) {
-        return req.file
-            && checkVar(body.faculty)
-            && checkVar(body.course)
-            && checkVar(body.group);
-    }
-
-    function checkVar(v) {
-        return v && v.val;
-    }
 
 };
