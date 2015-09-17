@@ -4,7 +4,7 @@
 
 var XLSX = require('xlsx');
 
-const MAX_OFFSET_Y = 30;
+const MAX_SKIP_Y = 30;
 const MAX_WEEKS = 30;
 const MAX_DAYS = 7;
 const MAX_LECTURES = 8;
@@ -17,17 +17,8 @@ module.exports = function (file) {
     var merges = sheet['!merges'];
 
     var weeks = [];
-
-    var offsetY = 0, offsetX = 1, startOffsetY = 0;
-    while (true) {
-        var cell = sheet['A' + (++startOffsetY)];
-        if (!cell) continue;
-        if (cell.t === 'n') { // find first row with lecture number (cell type 'n')
-            startOffsetY -= 2; // back to row with beginning of the week
-            break;
-        }
-        if (startOffsetY > MAX_OFFSET_Y) return null;
-    }
+    var offsetY, startOffsetY, offsetX = 1;
+    offsetY = startOffsetY = skipVoidRows(0);
 
     var week, counter = 0;
     while (week = readWeek()) {
@@ -54,8 +45,12 @@ module.exports = function (file) {
 
     function readDay() {
         //console.log('Read day: ', toAddr(offsetX, offsetY));
-        if (!sheet[toAddr(offsetX, offsetY)]) return null;
-        var day = {lectures: [], date: convertTime(offsetX, offsetY), name: dayName(0, offsetY)};
+        var dayTime = convertTime(offsetX, offsetY);
+        if (!dayTime) {
+            //console.log('Detected end of week');
+            return null;
+        }
+        var day = {lectures: [], date: dayTime, name: dayName(0, offsetY)};
         offsetY++;
 
         var lecture, counter = 0;
@@ -65,14 +60,19 @@ module.exports = function (file) {
             day.lectures.push(lecture);
             offsetY++;
         }
-        if (day.lectures.length < 1) return null; // skip empty days
+        //if (day.lectures.length < 1) return null; // skip empty days
         return day;
     }
 
     function readLecture() {
         //console.log('Read lecture: ', toAddr(offsetX, offsetY));
         var number = sheet['A' + (offsetY + 1)];
-        if (!number || number.t !== 'n') return null;
+        if (!number) { // This is weekend (detected empty row),
+            //console.log('This is weekend (detected empty row)');
+            offsetY++; // increment to read next day
+            return null;
+        }
+        if (number.t !== 'n') return null;
         var text = readCell(offsetX, offsetY);
         if (!text) text = {v: ''};
         return {number: number.v, text: text.v};
@@ -94,9 +94,10 @@ module.exports = function (file) {
     function convertTime(c, r) {
         //console.log('Read time: ', toAddr(c, r));
         var cell = sheet[toAddr(c, r)];
-        if (!cell) throw new Error('Cell [' + toAddr(c, r) + '] has no Date');
+        if (!cell) return null;
 
         var arr = cell.v.split('.');
+        if (arr.length !== 3) return null;
         return new Date('20' + arr[2], arr[1], arr[0]);
     }
 
@@ -104,6 +105,18 @@ module.exports = function (file) {
         var cell = sheet[toAddr(c, r)];
         if (!cell) throw Error('Cell [' + toAddr(c, r) + '] has no Day name');
         return cell.v;
+    }
+
+    function skipVoidRows(startRow) {
+        //console.log('Skip from ', initRow);
+        var skipped = 0;
+        while (true) {
+            var cell = sheet['A' + (startRow + (++skipped))];
+            if (skipped > MAX_SKIP_Y) return startRow;
+            if (!cell) continue;
+            if (cell.t === 'n') break; // find first row with lecture number (cell type 'n')
+        }
+        return startRow + skipped - 2;
     }
 
     function toAddr(c, r) {

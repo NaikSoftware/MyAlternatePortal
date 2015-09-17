@@ -17,6 +17,19 @@ module.exports = function Models(mongoose) {
     this.Course = mongoose.model('courses', courseSchema);
     this.Group = mongoose.model('groups', groupSchema);
 
+    // Schedule on 1 week
+    var scheduleSchema = new Schema({
+        startTime: Date,
+        days: [{
+            name: String,
+            date: Date,
+            lectures: [{
+                number: Number,
+                text: String
+            }]
+        }]
+    });
+
     this.connection = mongoose.connection;
 
 };
