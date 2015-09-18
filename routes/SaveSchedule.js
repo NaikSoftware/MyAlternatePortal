@@ -26,6 +26,7 @@ module.exports = function SaveSchedule(models) {
         var faculty, course, group;
         try {
             console.log(req.body);
+            console.log(req.file);
             faculty = checkVar(req.body.faculty);
             course = checkVar(req.body.course);
             group = checkVar(req.body.group);
@@ -106,7 +107,6 @@ module.exports = function SaveSchedule(models) {
         }
 
         function checkVar(v) {
-            console.error('VAR: ' + v);
             v = JSON.parse(v);
             if (typeof v == 'undefined' || typeof v.val == 'undefined')
                 throw new Error('Var ' + v + ' has wrong format or undefined');
