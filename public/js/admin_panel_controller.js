@@ -52,7 +52,7 @@ $(function () {
     });
 
     form.on('submit', function (e) {
-        //e.preventDefault();
+        e.preventDefault();
 
         var data = getFormData();
         if (!data) return;
