@@ -91,7 +91,7 @@ module.exports = function SaveSchedule(models) {
                 console.log('Selected', groupDB.id);
                 weeks.forEach(function (week) {
                     week.groupId = groupDB.id;
-                    //new models.Schedule(week).save();
+                    new models.Schedule(week).save();
                 });
                 res.send('{}');
             } catch (e) {
@@ -100,14 +100,10 @@ module.exports = function SaveSchedule(models) {
             }
         }
 
-        function checkResult(err, result) {
-            return !err && result && result.length > 0;
-        }
-
         function checkVar(v) {
             v = JSON.parse(v);
             if (typeof v == 'undefined' || typeof v.val == 'undefined')
-                throw new Error('Var ' + v + ' has wrong format');
+                throw new Error('Var ' + v + ' has wrong format or undefined');
             return v;
         }
 
