@@ -35,7 +35,13 @@ module.exports = function SaveSchedule(models) {
         }
 
         var facultyDB, courseDB, groupDB;
-        saveFaculty();
+        try {
+            saveFaculty();
+            res.send('{}');
+        } catch (e) {
+            console.log(e);
+            res.status(422).send(e.message);
+        }
 
         function saveFaculty() {
             if (faculty.type === 'new') {
@@ -52,6 +58,7 @@ module.exports = function SaveSchedule(models) {
         }
 
         function saveCourse() {
+            console.log('Save course: ', course);
             if (course.type === 'new' && facultyDB) {
                 courseDB = new models.Course({
                     name: course.val,
@@ -61,7 +68,9 @@ module.exports = function SaveSchedule(models) {
                     saveGroup();
                 });
             } else {
-                models.Course.findById(course.val, function (err, cou) {
+                var values = self.parseVars(course.val, 2); // 0 - faculty id, 1 - course id
+                if (!values) throw new Error('Course param broken');
+                models.Course.findById(values[1], function (err, cou) {
                     courseDB = cou;
                     saveGroup();
                 });
@@ -87,18 +96,12 @@ module.exports = function SaveSchedule(models) {
         }
 
         function convert() {
-            try {
-                var weeks = converter(req.file);
-                console.log('Selected', groupDB.id);
-                weeks.forEach(function (week) {
-                    week.groupId = groupDB.id;
-                    new models.Schedule(week).save();
-                });
-                res.send('{}');
-            } catch (e) {
-                console.log(e);
-                res.status(422).send(e.message);
-            }
+            var weeks = converter(req.file);
+            console.log('Selected', groupDB.id);
+            weeks.forEach(function (week) {
+                week.groupId = groupDB.id;
+                new models.Schedule(week).save();
+            });
         }
 
         function checkVar(v) {

@@ -26,15 +26,15 @@ module.exports = function GetSchedule(models) {
             }).lean().exec(function (err, result) {
                 if (checkResult(err, result)) {
                     result.forEach(function (course) {
-                        course._id = req.params.parent + '&' + course._id;
+                        course._id = self.packVars(req.params.parent, course._id);
                     });
                     res.send(result);
                 } else res.status(404).end();
             });
 
         } else if (type === 'groups') {
-            var params = req.params.parent.split('&');
-            if (params.length !== 2) res.status(400).end();
+            var params = self.parseVars(req.params.parent, 2);
+            if (!params) res.status(400).end();
             else {
                 models.Group.find({
                     facultyId: models.db.Types.ObjectId(params[0]),

@@ -5,6 +5,8 @@
 var fs = require('fs');
 var ejs = require('ejs');
 
+const PARAM_DELIMITER = '&';
+
 module.exports = function Route(method, path) {
     var self = this;
 
@@ -28,6 +30,21 @@ module.exports = function Route(method, path) {
             self.cache[path] = templ;
             return templ;
         }
+    };
+
+    self.parseVars = function (vars, len) {
+        var arr = vars.split(PARAM_DELIMITER);
+        if (arr.length != len) return null;
+        else return arr;
+    };
+
+    self.packVars = function () {
+        var result = '';
+        for (var i = 0; i < arguments.length; i++) {
+            result += arguments[i];
+            if (i < arguments.length - 1) result += PARAM_DELIMITER;
+        }
+        return result;
     };
 
     self.setup = function () {}
