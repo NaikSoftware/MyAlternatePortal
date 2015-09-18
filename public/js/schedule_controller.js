@@ -15,11 +15,18 @@ $(function () {
 
     scheduleAdapter.lists(facultyList, coursesList, groupsList)
         .providers(api.getFaculties, api.getCourses, api.getGroups)
-        .done(function (scheduleId) {
-            $.get('get-schedule/schedule/' + scheduleId)
-                .done(showSchedule)
-                .fail(showWarn);
-        });
+        .done(loadSchedule);
+		
+	function loadSchedule(scheduleId) {
+		waiting.css({'opacity': 1, 'z-index': 1000});
+		$.get('get-schedule/schedule/' + scheduleId)
+            .done(showSchedule)
+            .fail(function (err) {
+				showWarn(err.responseCode + ' ' + err.responseText);
+			}).always(function () {
+				waiting.css({'opacity': 0, 'z-index': -1})
+			});
+	}
 
     function showSchedule(data) {
         // Heading
@@ -38,7 +45,7 @@ $(function () {
 
     function renderDay(data) {
         var container = $('<div>').addClass('panel panel-info');
-        container.append($('<div>').addClass('panel-heading').text(data.name + ' - ' + date(data.date)));
+        container.append($('<div>').addClass('panel-heading').text(data.name + ' ' + date(data.date)));
         var table = $('<table>').addClass('table table-hover');
 
         container.append(table);
