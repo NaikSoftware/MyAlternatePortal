@@ -54,7 +54,7 @@ module.exports = function GetSchedule(models) {
                 startTime: {'$gte': startOfWeek, '$lt': endOfWeek}
             }).lean().exec(function (err, result) {
                 if (checkResult(err, result)) {
-                    res.send(result);
+                    res.send(result[0]);
                 } else res.status(404).end();
             });
 

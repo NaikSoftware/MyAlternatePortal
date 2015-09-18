@@ -22,8 +22,31 @@ $(function () {
         });
 
     function showSchedule(data) {
+        // Heading
         content.empty();
-        console.log(data);
+        var week = $('<div>').addClass('panel panel-primary')
+            .append($('<div>').addClass('panel-heading')
+                .append($('<h4>').text('Week ' + date(data.startTime) )));
+        var panel = $('<div>').addClass('container flex-container');
+        week.append($('<div>').addClass('panel-body').append(panel));
+
+        data.days.forEach(function (day) {
+            panel.append(renderDay(day));
+        });
+        content.append(week);
+    }
+
+    function renderDay(data) {
+        var container = $('<div>').addClass('panel panel-info');
+        container.append($('<div>').addClass('panel-heading').text(data.name + ' - ' + date(data.date)));
+        var table = $('<table>').addClass('table table-hover');
+
+        container.append(table);
+        return $('<div>').addClass('flex-item').append(container);
+    }
+
+    function date(raw) {
+        return moment(raw).format('DD.MM.YYYY');
     }
 
     function showWarn(text) {
