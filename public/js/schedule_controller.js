@@ -61,8 +61,9 @@ $(function () {
 		return $('<tr>')
 			.append($('<td>').text(data.number))
 			.append($('<td>').text(data.text)
-				.append($('<span>')
-					.append(lectSchedule[data.number]).addClass('lesson-time')));
+				.append('<br>')
+				.append($('<span>').addClass('lesson-time')
+					.append(lectSchedule[data.number])));
 	}
 
     function date(raw) {
