@@ -96,10 +96,11 @@ module.exports = function SaveSchedule(models) {
 
         function convert() {
             try {
-                console.log(req.file);
                 if (!req.file || !fs.existsSync(req.file.path)) throw new Error('Schedule file in wrong format');
 
                 var weeks = converter(fs.readFileSync(req.file.path));
+                fs.unlink(req.file.path);
+
                 weeks.forEach(function (week) {
                     week.groupId = groupDB.id;
                     new models.Schedule(week).save();
