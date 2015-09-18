@@ -34,7 +34,7 @@ $(function () {
             if (newName !== '')  return JSON.stringify({val: newName, type: 'new'});
             else if (selected === undefined) return null;
             else return JSON.stringify({val: selected.id});
-        }
+        };
     }
 
     function setDisabledNext(list, disabled) {

@@ -10,6 +10,7 @@ $(function () {
     var coursesList = $('#courses-list');
     var groupsList = $('#groups-list');
 
+	var waiting = $('#waiting');
     var content = $('#content');
     showWarn('Schedule not selected');
 
