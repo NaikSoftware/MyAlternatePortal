@@ -22,7 +22,7 @@ module.exports = function GetSchedule(models) {
 
         } else if (type === 'courses') {
             models.Course.find({
-                facultyId: models.db.Types.ObjectId(req.param.parent)
+                facultyId: models.db.Types.ObjectId(req.params.parent)
             }).lean().exec(function (err, result) {
                 if (checkResult(err, result)) {
                     result.forEach(function (course) {
