@@ -19,70 +19,98 @@ module.exports = function SaveSchedule(models) {
     self.addHandler(function (req, res) {
         res.setHeader('Content-Type', 'application/json');
         if (typeof req.session.logined == 'undefined') {
-            res.status(403).end();
-            return;
-        }
-
-        if (!checkQuery(req.body)) {
-            res.status(400).end();
+            res.status(403).send('Permissions denied');
             return;
         }
 
         var faculty, course, group;
-        if (req.body.faculty.type === 'new') {
-            faculty = new models.Faculty({name: req.body.faculty.val});
-            faculty.save();
+        try {
+            faculty = checkVar(req.body.faculty);
+            course = checkVar(req.body.course);
+            group = checkVar(req.body.group);
+        } catch (error) {
+            res.status(400).send('Query parameters wrong: ' + error.message);
+            return;
         }
-        if (req.body.course.type === 'new' && faculty) {
-            course = new models.Course({
-                name: req.body.course.val,
-                facultyId: faculty.id
-            });
-            course.save();
+
+        var facultyDB, courseDB, groupDB;
+        saveFaculty();
+
+        function saveFaculty() {
+            if (faculty.type === 'new') {
+                facultyDB = new models.Faculty({name: faculty.val});
+                facultyDB.save(function () {
+                    saveCourse();
+                });
+            } else {
+                models.Faculty.findById(faculty.val, function (err, fac) {
+                    facultyDB = fac;
+                    saveCourse();
+                });
+            }
         }
-        if (req.body.group.type === 'new' && course) {
-            group = new models.Group({
-                name: req.body.group.val,
-                facultyId: faculty.id,
-                courseId: course.id
-            });
-            group.save();
-            convert(group);
-        } else {
-            models.Group.findById(req.body.group.val, function (err, gr) {
-                convert(gr);
-            });
+
+        function saveCourse() {
+            if (course.type === 'new' && facultyDB) {
+                courseDB = new models.Course({
+                    name: course.val,
+                    facultyId: facultyDB.id
+                });
+                courseDB.save(function () {
+                    saveGroup();
+                });
+            } else {
+                models.Course.findById(course.val, function (err, cou) {
+                    courseDB = cou;
+                    saveGroup();
+                });
+            }
         }
-		
-		function convert(group) {
-       	 	try {
-           		var weeks = converter(req.file);
-            	weeks.forEach(function (week) {
-                	//week.groupId =
-                	//new models.Schedule(week).save();
-            	});
-            	res.status(200).end();
-        	} catch (e) {
-            	console.log(e);
-            	res.status(422).send(e.message);
-        	}
-    	}
 
-    	function checkResult(err, result) {
-        	return !err && result && result.length > 0;
-    	}
+        function saveGroup() {
+            if (group.type === 'new' && courseDB) {
+                groupDB = new models.Group({
+                    name: group.val,
+                    facultyId: facultyDB.id,
+                    courseId: courseDB.id
+                });
+                groupDB.save(function () {
+                    convert();
+                });
+            } else {
+                models.Group.findById(group.val, function (err, gr) {
+                    groupDB = gr;
+                    convert();
+                });
+            }
+        }
 
-    	function checkQuery(body) {
-        	return req.file
-            	&& checkVar(body.faculty)
-            	&& checkVar(body.course)
-            	&& checkVar(body.group);
-    	}
+        function convert() {
+            try {
+                var weeks = converter(req.file);
+                console.log('Selected', groupDB.id);
+                weeks.forEach(function (week) {
+                    week.groupId = groupDB.id;
+                    //new models.Schedule(week).save();
+                });
+                res.send('{}');
+            } catch (e) {
+                console.log(e);
+                res.status(422).send(e.message);
+            }
+        }
 
-    	function checkVar(v) {
-        	return v && v.val;
-    	}
-	
+        function checkResult(err, result) {
+            return !err && result && result.length > 0;
+        }
+
+        function checkVar(v) {
+            v = JSON.parse(v);
+            if (typeof v == 'undefined' || typeof v.val == 'undefined')
+                throw new Error('Var ' + v + ' has wrong format');
+            return v;
+        }
+
     });
 
 };

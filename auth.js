@@ -9,7 +9,7 @@ module.exports = function Auth(application) {
 
     application.app.use(session({
         secret: 'secret_labs',
-        store: new MongoStore({mongooseConnection: application.models.connection})
+        store: new MongoStore({mongooseConnection: application.models.db.connection})
     }));
 
     this.check = function (login, pass, handler) {

@@ -41,6 +41,5 @@ module.exports = function Models(mongoose) {
     });
     this.Schedule = mongoose.model('schedules', scheduleSchema);
 
-    this.connection = mongoose.connection;
-
+    this.db = mongoose;
 };
