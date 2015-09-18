@@ -5,7 +5,6 @@
 var Route = require('./route');
 var multer = require('multer');
 var converter = require('../converter');
-//var Busboy = require('busboy');
 
 
 module.exports = function SaveSchedule(models) {
@@ -25,25 +24,6 @@ module.exports = function SaveSchedule(models) {
     function handleRequest(req, res) {
         res.setHeader('Content-Type', 'application/json');
 
-        /*var busboy = new Busboy({headers: req.headers});
-         busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
-         console.log('File [' + fieldname + ']: filename: ' + filename + ', encoding: ' + encoding + ', mimetype: ' + mimetype);
-         file.on('data', function (data) {
-         console.log('File [' + fieldname + '] got ' + data.length + ' bytes');
-         });
-         file.on('end', function () {
-         console.log('File [' + fieldname + '] Finished');
-         });
-         });
-         busboy.on('field', function (fieldname, val, fieldnameTruncated, valTruncated) {
-         console.log('Field [' + fieldname + ']: value: ' + val);
-         });
-         busboy.on('finish', function () {
-         console.log('Done parsing form!');
-         });
-         req.pipe(busboy);*/
-
-
         if (typeof req.session.logined == 'undefined') {
             res.status(403).send('Permissions denied');
             return;
@@ -51,13 +31,10 @@ module.exports = function SaveSchedule(models) {
 
         var faculty, course, group;
         try {
-            console.log(req.body);
-            console.log(req.file);
             faculty = checkVar(req.body.faculty);
             course = checkVar(req.body.course);
             group = checkVar(req.body.group);
         } catch (error) {
-            console.error(error.stack);
             res.status(400).send('Query parameters wrong: ' + error.message);
             return;
         }
