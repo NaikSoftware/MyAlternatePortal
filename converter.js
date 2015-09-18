@@ -11,7 +11,7 @@ const MAX_DAYS = 7;
 const MAX_LECTURES = 8;
 
 module.exports = function (file) {
-    if (!file) return null;
+    if (!file || !file.buffer) return null;
 
     var book = XLSX.read(file.buffer);
     var sheet = book.Sheets[book.SheetNames[0]];
