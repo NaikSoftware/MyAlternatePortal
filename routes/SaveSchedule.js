@@ -5,6 +5,7 @@
 var Route = require('./route');
 var multer = require('multer');
 var converter = require('../converter');
+fs = require('fs');
 
 
 module.exports = function SaveSchedule(models) {
@@ -40,13 +41,7 @@ module.exports = function SaveSchedule(models) {
         }
 
         var facultyDB, courseDB, groupDB;
-        try {
-            saveFaculty();
-            res.send('{}');
-        } catch (e) {
-            console.log(e);
-            res.status(422).send(e.message);
-        }
+        saveFaculty();
 
         function saveFaculty() {
             if (faculty.type === 'new') {
@@ -100,12 +95,19 @@ module.exports = function SaveSchedule(models) {
         }
 
         function convert() {
-            var weeks = converter(req.file);
-            if (!weeks) return;
-            weeks.forEach(function (week) {
-                week.groupId = groupDB.id;
-                new models.Schedule(week).save();
-            });
+            try {
+                console.log(req.file);
+                if (!req.file || !fs.existsSync(req.file.path)) throw new Error('Schedule file in wrong format');
+
+                var weeks = converter(fs.readFileSync(req.file.path));
+                weeks.forEach(function (week) {
+                    week.groupId = groupDB.id;
+                    new models.Schedule(week).save();
+                });
+                res.send('{}'); // All rights
+            } catch (e) {
+                res.status(400).send(e.message);
+            }
         }
 
         function checkVar(v) {

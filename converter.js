@@ -10,10 +10,9 @@ const MAX_WEEKS = 30;
 const MAX_DAYS = 7;
 const MAX_LECTURES = 8;
 
-module.exports = function (file) {
-    if (!file || !file.buffer) return null;
+module.exports = function (data) {
 
-    var book = XLSX.read(file.buffer);
+    var book = XLSX.read(data);
     var sheet = book.Sheets[book.SheetNames[0]];
     var merges = sheet['!merges'];
 
