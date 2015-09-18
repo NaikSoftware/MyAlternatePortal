@@ -13,7 +13,10 @@ module.exports = function SaveSchedule(models) {
     Route.call(this, 'POST', '/save-schedule');
 
     self.setup = function (app) {
-        app.use(multer().single('schedule-file'));
+        var dir = process.env.OPENSHIFT_DATA_DIR || 'uploads/';
+        console.log('Using upload dir: ', dir);
+        var upload = multer({dest: dir});
+        app.use(upload.single('schedule-file'));
     };
 
     self.addHandler(function (req, res) {
