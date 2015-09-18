@@ -30,7 +30,6 @@ $(function () {
 	}
 
     function showSchedule(data) {
-        // Heading
         content.empty();
         var week = $('<div>').addClass('panel panel-primary')
             .append($('<div>').addClass('panel-heading')
@@ -48,14 +47,38 @@ $(function () {
         var container = $('<div>').addClass('panel panel-info');
         container.append($('<div>').addClass('panel-heading').text(data.name + ' ' + date(data.date)));
         var table = $('<table>').addClass('table table-hover');
-
+		table.append($('<col>').addClass('lesson_number'));
+		table.append($('<col>').addClass('lesson_text'));
+		
+		data.lectures.forEach(function (lecture) {
+			table.append(renderLecture(lecture));
+		});
         container.append(table);
         return $('<div>').addClass('flex-item').append(container);
     }
+	
+	function renderLecture(data) {
+		return $('<tr>')
+			.append($('<td>').text(data.number))
+			.append($('<td>').text(data.text)
+				.append($('<span>')
+					.append(lectSchedule[data.number]).addClass('lesson-time')));
+	}
 
     function date(raw) {
         return moment(raw).format('DD.MM.YYYY');
     }
+	
+	var lectSchedule = {
+		1: '7.30-8.50',
+		2: '9.00-10.20',
+		3: '10.30-11.50',
+		4: '12.05-13.25',
+		5: '13.35-14.55',
+		6: '15.05-16.25',
+		7: '16.35-17.55',
+		8: '18.05-19.25'
+	};
 
     function showWarn(text) {
         content.empty();

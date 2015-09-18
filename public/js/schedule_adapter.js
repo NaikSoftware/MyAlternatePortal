@@ -72,7 +72,7 @@ var ScheduleAdapter = function () {
                     next.data('parentId', selected);
                     fill(next, selected);   // or else show next list
                 }
-            })
+            });
         }).fail(function (err) {
             cancelFill(list, err);
         });
