@@ -3,6 +3,7 @@
  */
 
 var Route = require('./route');
+var moment = require('moment');
 
 module.exports = function GetSchedule(models) {
     var self = this;
@@ -44,6 +45,18 @@ module.exports = function GetSchedule(models) {
                     else res.status(404).end();
                 });
             }
+
+        } else if (type === 'schedule') {
+            var startOfWeek = moment().startOf('week').add(1, 'day');
+            var endOfWeek = startOfWeek.clone().add(6, 'days');
+            models.Schedule.find({
+                groupId: models.db.Types.ObjectId(req.params.parent),
+                startTime: {'$gte': startOfWeek, '$lt': endOfWeek}
+            }).lean().exec(function (err, result) {
+                if (checkResult(err, result)) {
+                    res.send(result);
+                } else res.status(404).end();
+            });
 
         } else {
             res.status(404).end();

@@ -11,17 +11,24 @@ $(function () {
     var groupsList = $('#groups-list');
 
     var content = $('#content');
-    showVoidWarn();
+    showWarn('Schedule not selected');
 
     scheduleAdapter.lists(facultyList, coursesList, groupsList)
         .providers(api.getFaculties, api.getCourses, api.getGroups)
         .done(function (scheduleId) {
-            console.log('Selected ' + scheduleId);
+            $.get('get-schedule/schedule/' + scheduleId)
+                .done(showSchedule)
+                .fail(showWarn);
         });
 
-    function showVoidWarn() {
+    function showSchedule(data) {
         content.empty();
-        var msg = $('<div>Schedule not selected</div>')
+        console.log(data);
+    }
+
+    function showWarn(text) {
+        content.empty();
+        var msg = $('<div>' + text.toLocaleString() + '</div>')
             .addClass('label label-primary main-message');
         content.append(msg);
     }
