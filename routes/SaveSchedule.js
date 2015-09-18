@@ -102,6 +102,7 @@ module.exports = function SaveSchedule(models) {
         }
 
         function checkVar(v) {
+            console.error('VAR: ' + v);
             v = JSON.parse(v);
             if (typeof v == 'undefined' || typeof v.val == 'undefined')
                 throw new Error('Var ' + v + ' has wrong format or undefined');
