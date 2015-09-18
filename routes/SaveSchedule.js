@@ -29,6 +29,7 @@ module.exports = function SaveSchedule(models) {
             course = checkVar(req.body.course);
             group = checkVar(req.body.group);
         } catch (error) {
+            console.error(error.stack);
             res.status(400).send('Query parameters wrong: ' + error.message);
             return;
         }
