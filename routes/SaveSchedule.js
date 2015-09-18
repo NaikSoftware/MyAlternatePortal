@@ -25,6 +25,7 @@ module.exports = function SaveSchedule(models) {
 
         var faculty, course, group;
         try {
+            console.log(req.body);
             faculty = checkVar(req.body.faculty);
             course = checkVar(req.body.course);
             group = checkVar(req.body.group);
