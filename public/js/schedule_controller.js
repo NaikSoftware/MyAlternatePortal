@@ -33,7 +33,7 @@ $(function () {
         content.empty();
         var week = $('<div>').addClass('panel panel-primary')
             .append($('<div>').addClass('panel-heading')
-                .append($('<h4>').text('Week ' + date(data.startTime) )));
+                .append($('<h4>').addClass('text-center').text('Week ' + date(data.startTime) )));
         var panel = $('<div>').addClass('container flex-container');
         week.append($('<div>').addClass('panel-body').append(panel));
 
@@ -51,6 +51,7 @@ $(function () {
 		table.append($('<col>').addClass('lesson_text'));
 		
 		data.lectures.forEach(function (lecture) {
+			if (lecture.text === '') return;
 			table.append(renderLecture(lecture));
 		});
         container.append(table);
