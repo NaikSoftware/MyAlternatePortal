@@ -32,6 +32,10 @@ body {
     font-size: 27px;
 }
 
+.medium-size {
+    font-size: 23px;
+}
+
 .drop-item {
     margin-left: 7px;
     margin-right: 7px;
