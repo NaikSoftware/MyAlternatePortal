@@ -16,7 +16,7 @@ module.exports = function GetSchedule(models) {
         var type = req.params.type;
 
         if (type === 'faculties') {
-            models.Faculty.find({}, function (err, result) {
+            models.Faculty.find().sort('name').exec(function (err, result) {
                 if (checkResult(err, result)) res.send(result);
                 else res.status(404).end();
             });
@@ -24,7 +24,7 @@ module.exports = function GetSchedule(models) {
         } else if (type === 'courses') {
             models.Course.find({
                 facultyId: models.db.Types.ObjectId(req.params.parent)
-            }).lean().exec(function (err, result) {
+            }).sort('name').lean().exec(function (err, result) {
                 if (checkResult(err, result)) {
                     result.forEach(function (course) {
                         course._id = self.packVars(req.params.parent, course._id);
@@ -40,7 +40,7 @@ module.exports = function GetSchedule(models) {
                 models.Group.find({
                     facultyId: models.db.Types.ObjectId(params[0]),
                     courseId: models.db.Types.ObjectId(params[1])
-                }).lean().exec(function (err, result) {
+                }).sort('name').lean().exec(function (err, result) {
                     if (checkResult(err, result)) res.send(result);
                     else res.status(404).end();
                 });
