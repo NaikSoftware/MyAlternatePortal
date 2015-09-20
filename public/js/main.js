@@ -60,7 +60,6 @@ $(function () {
     });
 
     waiting = $('#waiting');
-
 });
 
 /* Helper */
@@ -76,12 +75,9 @@ var Helper = {
         });
     },
     showWaiting: function () {
-        console.log(waiting);
         waiting.css({'opacity': 1, 'z-index': 1000});
     },
     hideWaiting: function () {
         waiting.css({'opacity': 0, 'z-index': -1})
     }
 };
-
-
