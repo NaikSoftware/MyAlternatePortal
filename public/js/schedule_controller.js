@@ -85,7 +85,8 @@ $(function () {
     }
 
     function renderDay(data) {
-        var container = $('<div>').addClass('panel panel-info');
+        var isCurrentDay = date(data.date) === date(Date.now());
+        var container = $('<div>').addClass('panel ' + (isCurrentDay ? 'panel-danger' : 'panel-info'));
         container.append($('<div>').addClass('panel-heading').text(data.name + ' ' + date(data.date)));
         var table = $('<table>').addClass('table table-hover');
         table.append($('<col>').addClass('lesson_number'));
