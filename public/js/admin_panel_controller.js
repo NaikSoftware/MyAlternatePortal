@@ -4,7 +4,6 @@
 
 $(function () {
 
-    var waiting = $('#waiting');
     var scheduleAdapter = new ScheduleAdapter();
 
     var facultyList = $('#faculties-list');
@@ -45,19 +44,17 @@ $(function () {
         setDisabledNext(list.data('next'), disabled);
     }
 
-    var form = $('form');
     var file;
     $(':file').change(function () {
         file = this.files[0];
     });
 
-    form.on('submit', function (e) {
-        e.preventDefault();
+    $('#save').click(function (e) {
 
         var data = getFormData();
         if (!data) return;
 
-        waiting.css({'opacity': 1, 'z-index': 1000});
+        Helper.showWaiting();
         var xhr = $.ajax({
             url: '/save-schedule',
             type: 'POST',
@@ -70,9 +67,7 @@ $(function () {
             window.location.href = '/admin';
         }).fail(function (err) {
             alert('Upload error: ' + err.responseText);
-        }).always(function () {
-            waiting.css({'opacity': 0, 'z-index': -1})
-        });
+        }).always(Helper.hideWaiting);
     });
 
     function getFormData() {
@@ -100,6 +95,37 @@ $(function () {
         var name = (typeof obj == 'string') ? obj : obj.data('name');
         alert(name + ' not selected');
         return false;
+    }
+
+    //##############
+    // Remove selected handlers
+
+    $('#remFac').click(function () {
+        var fac = facultyList.find('.active')[0];
+        if (fac) remove('remove/faculty/' + fac.id);
+        else notSelected(facultyList);
+    });
+
+    $('#remCou').click(function () {
+        var cou = coursesList.find('.active')[0];
+        if (cou) remove('remove/course/' + cou.id);
+        else notSelected(coursesList);
+    });
+
+    $('#remGro').click(function () {
+        var gro = groupsList.find('.active')[0];
+        if (gro) remove('remove/group/' + gro.id);
+        else notSelected(groupsList);
+    });
+
+    function remove(query) {
+        Helper.showWaiting();
+        $.get(query).done(function () {
+                alert('Removed');
+                window.location.href = '/admin';
+            }).fail(function (err) {
+                alert(err.status + ' ' + err.responseText);
+            }).always(Helper.hideWaiting);
     }
 
 });

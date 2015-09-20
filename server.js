@@ -82,7 +82,8 @@ var App = function () {
             new (require('./routes/Admin')),
             new (require('./routes/Logout')),
             new (require('./routes/GetSchedule'))(self.models),
-            new (require('./routes/SaveSchedule'))(self.models)
+            new (require('./routes/SaveSchedule'))(self.models),
+            new (require('./routes/RemoveSchedule'))(self.models)
         ];
     };
 

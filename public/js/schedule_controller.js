@@ -10,7 +10,6 @@ $(function () {
     var coursesList = $('#courses-list');
     var groupsList = $('#groups-list');
 
-    var waiting = $('#waiting');
     var content = $('#content');
     showWarn('Schedule not selected');
 
@@ -44,14 +43,12 @@ $(function () {
 
     function loadSchedule(shift) {
         dateAnchor += shift;
-        waiting.css({'opacity': 1, 'z-index': 1000});
+        Helper.showWaiting();
         $.get('get-schedule/schedule/' + scheduleId + '&' + dateAnchor)
             .done(showSchedule)
             .fail(function (err) {
                 showWarn(err.status + ' ' + err.responseText);
-            }).always(function () {
-                waiting.css({'opacity': 0, 'z-index': -1})
-            });
+            }).always(Helper.hideWaiting);
     }
 
     function showSchedule(data) {

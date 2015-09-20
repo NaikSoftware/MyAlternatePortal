@@ -11,7 +11,8 @@
 
                 <div class="input-group col-md-6">
                     <span class="input-group-btn">
-                        <span class="btn btn-info btn-file">Browse&hellip; <input type="file" datatype=".xls" name="schedule-file"></span>
+                        <span class="btn btn-info btn-file">Browse&hellip; <input type="file" datatype=".xls"
+                                                                                  name="schedule-file"></span>
                     </span>
                     <input type="text" class="form-control" readonly id="file" required>
                 </div>
@@ -20,46 +21,56 @@
             <label>Save as</label>
 
             <div class="row schedule-menu">
-            <div class="col-md-4 form-item-responsive">
-                <div class="input-group">
-                <div class="dropdown input-group-btn">
-                    <button class="btn btn-info" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Факультет<span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu" id="faculties-list"></ul>
+                <div class="col-md-4 form-item-responsive">
+                    <div class="input-group">
+                        <div class="dropdown input-group-btn">
+                            <button class="btn btn-info" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
+                                Факультет<span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu" id="faculties-list"></ul>
+                        </div>
+                        <input type="text" class="form-control" id="new-faculty" placeholder="Or input new">
+                        <div class="input-group-btn">
+                            <a class="btn btn-danger" id="remFac"><span class="glyphicon glyphicon-remove"></span></a>
+                        </div>
+                    </div>
                 </div>
-                <input type="text" class="form-control" id="new-faculty" placeholder="Or input new">
+
+                <div class="col-md-4 form-item-responsive">
+                    <div class="input-group">
+                        <div class="dropdown input-group-btn">
+                            <button class="btn btn-info" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
+                                Курс<span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu" id="courses-list"></ul>
+                        </div>
+                        <input type="text" class="form-control" id="new-course" placeholder="Or input new">
+                        <div class="input-group-btn">
+                            <a class="btn btn-danger" id="remCou"><span class="glyphicon glyphicon-remove"></span></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 form-item-responsive">
+                    <div class="input-group">
+                        <div class="dropdown input-group-btn">
+                            <button class="btn btn-info" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
+                                Группа<span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu" id="groups-list"></ul>
+                        </div>
+                        <input type="text" class="form-control" id="new-group" placeholder="Or input new">
+                        <div class="input-group-btn">
+                            <a class="btn btn-danger" id="remGro"><span class="glyphicon glyphicon-remove"></span></a>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div class="col-md-4 form-item-responsive">
-                <div class="input-group">
-                <div class="dropdown input-group-btn">
-                    <button class="btn btn-info" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Курс<span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu" id="courses-list"></ul>
-                </div>
-                <input type="text" class="form-control" id="new-course" placeholder="Or input new">
-                </div>
-            </div>
-
-            <div class="col-md-4 form-item-responsive">
-                <div class="input-group">
-                <div class="dropdown input-group-btn">
-                    <button class="btn btn-info" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Группа<span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu" id="groups-list"></ul>
-                </div>
-                <input type="text" class="form-control" id="new-group" placeholder="Or input new">
-                </div>
-            </div>
-            </div>
-
-
-            <button type="submit" class="btn btn-primary" style="margin-top: 30px;">Convert & Save</button>
         </form>
+        <button class="btn btn-primary" id="save" style="margin-top: 30px;">Convert & Save</button>
     </div>
 </div>
 

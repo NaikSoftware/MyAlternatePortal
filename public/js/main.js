@@ -62,6 +62,7 @@ $(function () {
 });
 
 /* Helper */
+var waiting = $('#waiting');
 var Helper = {
     jsonQuery: function (path, obj) {
         return $.ajax({
@@ -71,6 +72,12 @@ var Helper = {
             contentType: 'application/json; charset=utf-8',
             dataType: 'json'
         });
+    },
+    showWaiting: function () {
+        waiting.css({'opacity': 1, 'z-index': 1000});
+    },
+    hideWaiting: function () {
+        waiting.css({'opacity': 0, 'z-index': -1})
     }
 };
 
