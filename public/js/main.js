@@ -59,10 +59,12 @@ $(function () {
 
     });
 
+    waiting = $('#waiting');
+
 });
 
 /* Helper */
-var waiting = $('#waiting');
+var waiting;
 var Helper = {
     jsonQuery: function (path, obj) {
         return $.ajax({
@@ -74,6 +76,7 @@ var Helper = {
         });
     },
     showWaiting: function () {
+        console.log(waiting);
         waiting.css({'opacity': 1, 'z-index': 1000});
     },
     hideWaiting: function () {
