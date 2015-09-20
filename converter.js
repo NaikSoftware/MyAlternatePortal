@@ -19,6 +19,7 @@ module.exports = function (data) {
     var weeks = [];
     var offsetY, startOffsetY, offsetX = 1;
     offsetY = startOffsetY = skipVoidRows(0);
+    //console.log('Skipped: ', startOffsetY);
 
     var week, counter = 0;
     while (week = readWeek()) {
@@ -108,15 +109,14 @@ module.exports = function (data) {
     }
 
     function skipVoidRows(startRow) {
-        //console.log('Skip from ', initRow);
         var skipped = 0;
         while (true) {
-            var cell = sheet['A' + (startRow + (++skipped))];
+            var cell = sheet['B' + (startRow + (++skipped))];
             if (skipped > MAX_SKIP_Y) throw new Error('Empty rows limit exceeded');
             if (!cell) continue;
             if (cell.t === 'n') break; // find first row with lecture number (cell type 'n')
         }
-        return startRow + skipped - 2;
+        return startRow + skipped;
     }
 
     function toAddr(c, r) {
