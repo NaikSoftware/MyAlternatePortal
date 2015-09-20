@@ -14,16 +14,33 @@ $(function () {
     var content = $('#content');
     showWarn('Schedule not selected');
 
-    var dateAnchor;
+    var dateAnchor = 0;
     var scheduleId;
 
     scheduleAdapter.lists(facultyList, coursesList, groupsList)
         .providers(api.getFaculties, api.getCourses, api.getGroups)
         .done(function (id) {
+            cookie('id', id);
+            cookie('fac', facultyList.find('.active').text());
+            cookie('cou', coursesList.find('.active').text());
+            cookie('gro', groupsList.find('.active').text());
             scheduleId = id;
             dateAnchor = 0;
             loadSchedule(0);
         });
+
+    loadFromCookies();
+
+    function loadFromCookies() {
+        var id = cookie('id'), fac = cookie('fac'), cou = cookie('cou'), gro = cookie('gro');
+        if (id && fac && cou && gro) {
+            facultyList.setTitle(fac);
+            coursesList.setTitle(cou);
+            groupsList.setTitle(gro);
+            scheduleId = id;
+            loadSchedule(0);
+        }
+    }
 
     function loadSchedule(shift) {
         dateAnchor += shift;
@@ -111,6 +128,18 @@ $(function () {
         var msg = $('<div>' + text.toLocaleString() + '</div>')
             .addClass('label label-primary main-message');
         content.append(msg);
+    }
+
+    function cookie(key, val) {
+        if (val) document.cookie = key + '=' + val + '; expires=' + moment().add(1, 'month') + '; path=/';
+        else {
+            var cookies = document.cookie.split(/;\s+/gi);
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i];
+                var currKey = cookie.substr(0, cookie.indexOf('='));
+                if (currKey === key) return cookie.substr(key.length + 1)
+            }
+        }
     }
 
 });

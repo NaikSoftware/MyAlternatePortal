@@ -60,7 +60,7 @@ var ScheduleAdapter = function () {
                 var li = $(this);
                 list.children('li').removeClass('active');
                 li.addClass('active');
-                list.data('btn').text(li.text()).append($('<span>').addClass('caret'));
+                list.setTitle(li.text());
 
                 var next = list.data('next');
                 var selected = li.attr('id');
@@ -111,6 +111,9 @@ var ScheduleAdapter = function () {
                 prevRequired(list, prev);
             } else fill(list, list.data('parentId'));
         });
+        list.setTitle = function (title) {
+            btn.text(title).append($('<span>').addClass('caret'));
+        };
         if (prev) prev.data('next', list);
     }
 
