@@ -11,7 +11,6 @@ $(function () {
     var groupsList = $('#groups-list');
 
     var content = $('#content');
-    showWarn('Schedule not selected');
 
     var dateAnchor = 0;
     var scheduleId;
@@ -38,7 +37,7 @@ $(function () {
             groupsList.setTitle(gro);
             scheduleId = id;
             loadSchedule(0);
-        }
+        } else showWarn('Schedule not selected');
     }
 
     function loadSchedule(shift) {
