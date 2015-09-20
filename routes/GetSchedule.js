@@ -34,7 +34,7 @@ module.exports = function GetSchedule(models) {
             });
 
         } else if (type === 'groups') {
-            var params = self.parseVars(req.params.parent, 2);
+            var params = self.unpackVars(req.params.parent, 2);
             if (!params) res.status(400).end();
             else {
                 models.Group.find({
@@ -47,16 +47,21 @@ module.exports = function GetSchedule(models) {
             }
 
         } else if (type === 'schedule') {
-            var startOfWeek = moment().startOf('week').add(1, 'day');
-            var endOfWeek = startOfWeek.clone().add(6, 'days');
-            models.Schedule.find({
-                groupId: models.db.Types.ObjectId(req.params.parent),
-                startTime: {'$gte': startOfWeek, '$lt': endOfWeek}
-            }).lean().exec(function (err, result) {
-                if (checkResult(err, result)) {
-                    res.send(result[0]);
-                } else res.status(404).end();
-            });
+            var par = self.unpackVars(req.params.parent, 2);
+            if (!par) res.status(400).end();
+            else {
+                var groupId = par[0];
+                var startOfWeek = moment().startOf('week').add(1, 'day').add(par[1], 'week');
+                var endOfWeek = startOfWeek.clone().add(6, 'days');
+                models.Schedule.find({
+                    groupId: models.db.Types.ObjectId(groupId),
+                    startTime: {'$gte': startOfWeek, '$lt': endOfWeek}
+                }).lean().exec(function (err, result) {
+                    if (checkResult(err, result)) {
+                        res.send(result[0]);
+                    } else res.status(404).end();
+                });
+            }
 
         } else {
             res.status(404).end();

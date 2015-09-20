@@ -67,7 +67,7 @@ module.exports = function SaveSchedule(models) {
                     saveGroup();
                 });
             } else {
-                var values = self.parseVars(course.val, 2); // 0 - faculty id, 1 - course id
+                var values = self.unpackVars(course.val, 2); // 0 - faculty id, 1 - course id
                 if (!values) throw new Error('Course param broken');
                 models.Course.findById(values[1], function (err, cou) {
                     courseDB = cou;

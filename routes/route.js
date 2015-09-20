@@ -32,7 +32,7 @@ module.exports = function Route(method, path) {
         }
     };
 
-    self.parseVars = function (vars, len) {
+    self.unpackVars = function (vars, len) {
         var arr = vars.split(PARAM_DELIMITER);
         if (arr.length != len) return null;
         else return arr;

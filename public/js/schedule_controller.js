@@ -14,16 +14,24 @@ $(function () {
     var content = $('#content');
     showWarn('Schedule not selected');
 
+    var dateAnchor;
+    var scheduleId;
+
     scheduleAdapter.lists(facultyList, coursesList, groupsList)
         .providers(api.getFaculties, api.getCourses, api.getGroups)
-        .done(loadSchedule);
+        .done(function (id) {
+            scheduleId = id;
+            dateAnchor = 0;
+            loadSchedule(0);
+        });
 
-    function loadSchedule(scheduleId) {
+    function loadSchedule(shift) {
+        dateAnchor += shift;
         waiting.css({'opacity': 1, 'z-index': 1000});
-        $.get('get-schedule/schedule/' + scheduleId)
+        $.get('get-schedule/schedule/' + scheduleId + '&' + dateAnchor)
             .done(showSchedule)
             .fail(function (err) {
-                showWarn(err.responseCode + ' ' + err.responseText);
+                showWarn(err.status + ' ' + err.responseText);
             }).always(function () {
                 waiting.css({'opacity': 0, 'z-index': -1})
             });
@@ -34,16 +42,22 @@ $(function () {
         var week = $('\
             <div class="panel panel-primary">\
                 <div class="panel-heading text-center">\
-                    <a href="#" class="label label-primary pull-left" onclick="goPrev()">\
+                    <a href="#" class="label label-primary pull-left" id="prev">\
                         <span class="large-size glyphicon glyphicon-arrow-left"></span>\
                     </a>\
                     <span class="medium-size" id="head"></span>\
-                    <a href="#" class="label label-primary pull-right" onclick="goNext()">\
+                    <a href="#" class="label label-primary pull-right" id="next">\
                         <span class="large-size glyphicon glyphicon-arrow-right"></span>\
                     </a>\
                 </div>\
                 <div class="panel-body"><div class="container flex-container"></div></div>\
             </div>');
+        week.find('#prev').click(function () {
+            loadSchedule(-1);
+        });
+        week.find('#next').click(function () {
+            loadSchedule(+1);
+        });
 
         week.find('#head').text('Week ' + moment(data.startTime).format('DD.MM.YYYY'));
         var panel = week.find('.flex-container');
