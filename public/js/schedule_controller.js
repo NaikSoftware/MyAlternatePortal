@@ -128,7 +128,7 @@ $(function () {
     }
 
     function cookie(key, val) {
-        if (val) document.cookie = key + '=' + val + '; expires=' + moment().add(1, 'month') + '; path=/';
+        if (val) document.cookie = key + '=' + val + '; expires=' + moment().add(1, 'month').toString() + '; path=/';
         else {
             var cookies = document.cookie.split(/;\s+/gi);
             for (var i = 0; i < cookies.length; i++) {
