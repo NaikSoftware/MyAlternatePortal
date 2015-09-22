@@ -16,7 +16,7 @@ module.exports = function GetSchedule(models) {
         var type = req.params.type;
 
         if (type === 'faculties') {
-            models.Faculty.find().sort('name').exec(function (err, result) {
+            models.Faculty.find().sort('name').lean().exec(function (err, result) {
                 if (checkResult(err, result)) res.send(result);
                 else res.status(404).end();
             });
