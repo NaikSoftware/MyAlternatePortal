@@ -44,5 +44,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-processhtml');
     grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.registerTask('production', ['uglify', 'cssmin', 'concat', 'processhtml']);
+    grunt.registerTask('prod', ['uglify', 'cssmin', 'concat', 'processhtml']);
 };
