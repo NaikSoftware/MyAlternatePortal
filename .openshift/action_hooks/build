@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo "Start Grunt-cli"
+
+cd $OPENSHIFT_REPO_DIR
+./node_modules/grunt-cli/bin/grunt prod
+
+echo "Grunt finished"

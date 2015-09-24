@@ -32,14 +32,15 @@
     "xlsx": ">=0.8.0",
     "multer": ">=1.0.3",
     "moment": ">=2.10.0",
-    "busboy": ">=0.2.11"
-  },
-  "devDependencies": {
+    "busboy": ">=0.2.11",
     "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
     "grunt-contrib-concat": "^0.5.1",
     "grunt-contrib-cssmin": "^0.14.0",
     "grunt-contrib-uglify": "^0.9.2",
     "grunt-processhtml": "^0.3.8"
+  },
+  "devDependencies": {
   },
   "bundleDependencies": [],
   "private": true,
