@@ -4,8 +4,11 @@
 <% if (!locals.logined) {           %>
 <%-     include login_modal.html    %>
 <% }                                %>
+
+<!-- build:js /js/index.min.js -->
 <script src="/js/moment.min.js"></script>
 <script src="/js/schedule_controller.js"></script>
+<!-- /build -->
 <div id="content">
     <!--%- include schedule.html       %-->
 </div>
