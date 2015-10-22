@@ -48,6 +48,9 @@ $(function () {
             .fail(function (err) {
                 showWarn(err.status + ' ' + err.responseText);
             }).always(Helper.hideWaiting);
+        if(window.extensionSync) { // Browser extension integration
+            window.extensionSync(scheduleId, groupsList.data('name'));
+        }
     }
 
     function showSchedule(data) {
