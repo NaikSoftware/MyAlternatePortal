@@ -67,14 +67,15 @@ $(function () {
                     </a>\
                 </div>\
                 <div class="panel-body" id="schedule-body"><div class="container flex-container"></div></div>\
-            </div>').hide();
+            </div>');
+        var scheduleBody = week.children('#schedule-body').hide();
         week.find('#prev').click(function () {
-            week.children('#schedule-body').fadeOut('slow', function () {
+            scheduleBody.fadeOut('slow', function () {
                 loadSchedule(-1);
             });
         });
         week.find('#next').click(function () {
-            week.children('#schedule-body').fadeOut('slow', function () {
+            scheduleBody.fadeOut('slow', function () {
                 loadSchedule(+1);
             });
         });
@@ -84,8 +85,8 @@ $(function () {
         data.days.forEach(function (day) {
             panel.append(renderDay(day));
         });
+        scheduleBody.fadeIn('slow');
         content.append(week);
-        week.fadeIn('slow');
     }
 
     function renderDay(data) {
