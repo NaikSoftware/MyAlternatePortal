@@ -49,7 +49,7 @@ $(function () {
                 showWarn(err.status + ' ' + err.responseText);
             }).always(Helper.hideWaiting);
         if(window.extensionSync) { // Browser extension integration
-            window.extensionSync(scheduleId, $('#groups-list').data('btn').text());
+            window.extensionSync(scheduleId, groupsList.data('btn').text());
         }
     }
 
