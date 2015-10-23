@@ -66,13 +66,17 @@ $(function () {
                         <span class="large-size glyphicon glyphicon-arrow-right"></span>\
                     </a>\
                 </div>\
-                <div class="panel-body"><div class="container flex-container"></div></div>\
+                <div class="panel-body" id="schedule-body"><div class="container flex-container"></div></div>\
             </div>');
         week.find('#prev').click(function () {
-            loadSchedule(-1);
+            fade(week.children('#schedule-body'), 'left', function () {
+                loadSchedule(-1);
+            });
         });
         week.find('#next').click(function () {
-            loadSchedule(+1);
+            fade(week.children('#schedule-body'), 'right', function () {
+                loadSchedule(+1);
+            });
         });
 
         week.find('#head').text('Week ' + moment(data.startTime).format('DD.MM.YYYY'));
@@ -140,6 +144,13 @@ $(function () {
                 if (currKey === key) return cookie.substr(key.length + 1)
             }
         }
+    }
+    
+    function fade(element, type, callback) {
+        var moveTo = type === 'left' ? '-=200px' : '+=200px';
+        element.animate({
+                left: moveTo, opacity: 0
+            }, 'slow', callback);
     }
 
 });
