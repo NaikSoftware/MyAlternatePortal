@@ -66,27 +66,27 @@ $(function () {
                         <span class="large-size glyphicon glyphicon-arrow-right"></span>\
                     </a>\
                 </div>\
-                <div class="panel-body" id="schedule-body"><div class="container flex-container"></div></div>\
+                <div class="panel-body"><div class="container flex-container"></div></div>\
             </div>');
-        var scheduleBody = week.children('#schedule-body').hide();
+        var panel = week.find('.flex-container').hide();
         week.find('#prev').click(function () {
-            scheduleBody.fadeOut('slow', function () {
+            panel.fadeOut('slow', function () {
                 loadSchedule(-1);
             });
         });
         week.find('#next').click(function () {
-            scheduleBody.fadeOut('slow', function () {
+            panel.fadeOut('slow', function () {
                 loadSchedule(+1);
             });
         });
 
         week.find('#head').text('Week ' + moment(data.startTime).format('DD.MM.YYYY'));
-        var panel = week.find('.flex-container');
+        
         data.days.forEach(function (day) {
             panel.append(renderDay(day));
         });
-        scheduleBody.fadeIn('slow');
         content.append(week);
+        panel.fadeIn('slow');
     }
 
     function renderDay(data) {
