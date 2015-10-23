@@ -67,14 +67,14 @@ $(function () {
                     </a>\
                 </div>\
                 <div class="panel-body" id="schedule-body"><div class="container flex-container"></div></div>\
-            </div>');
+            </div>').hide();
         week.find('#prev').click(function () {
-            fade(week.children('#schedule-body'), function () {
+            week.children('#schedule-body').fadeOut('slow', function () {
                 loadSchedule(-1);
             });
         });
         week.find('#next').click(function () {
-            fade(week.children('#schedule-body'), function () {
+            week.children('#schedule-body').fadeOut('slow', function () {
                 loadSchedule(+1);
             });
         });
@@ -85,6 +85,7 @@ $(function () {
             panel.append(renderDay(day));
         });
         content.append(week);
+        week.fadeIn('slow');
     }
 
     function renderDay(data) {
@@ -144,12 +145,6 @@ $(function () {
                 if (currKey === key) return cookie.substr(key.length + 1)
             }
         }
-    }
-    
-    function fade(element, callback) {
-        element.animate({
-                opacity: 0
-            }, 'slow', callback);
     }
 
 });
