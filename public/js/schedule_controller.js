@@ -69,12 +69,12 @@ $(function () {
                 <div class="panel-body" id="schedule-body"><div class="container flex-container"></div></div>\
             </div>');
         week.find('#prev').click(function () {
-            fade(week.children('#schedule-body'), 'left', function () {
+            fade(week.children('#schedule-body'), function () {
                 loadSchedule(-1);
             });
         });
         week.find('#next').click(function () {
-            fade(week.children('#schedule-body'), 'right', function () {
+            fade(week.children('#schedule-body'), function () {
                 loadSchedule(+1);
             });
         });
@@ -146,10 +146,9 @@ $(function () {
         }
     }
     
-    function fade(element, type, callback) {
-        var moveTo = type === 'left' ? '-=200px' : '+=200px';
+    function fade(element, callback) {
         element.animate({
-                left: moveTo, opacity: 0
+                opacity: 0
             }, 'slow', callback);
     }
 
