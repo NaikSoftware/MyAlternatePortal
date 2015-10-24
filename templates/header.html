@@ -22,6 +22,42 @@
 <body>
 <div style="min-height: 100%;">
     <div class="container main">
+        <div id="extension-banner" class="text-center">
+            <div>Рады вам представить наше новое расширение для браузера Google Chrome...</div>
+            <ol style="display: none;">
+                <li>Скачайте <a href="/path-to-extension">архив с расширением</a>. В нем вы найдете инструкцию по установке;</li>
+                <li>Установите по инструкции, которую вы найдете в архиве. Это очень быстро и просто (если будете делать все по инструкции, то это не займет у вас более 1 минуты);</li>
+                <li>Наслаждайтесь простым и быстрым доступом к расписанию из панели браузера.</li>
+            </ol>
+        </div>
+        <script>
+            $("#extension-banner > div").click(function(){
+                $("#extension-banner ol").show();
+            });
+        </script>
+        <style>
+            #extension-banner {
+                background: rgba(239, 49, 49, 0.72);
+                color: #fff;
+                border-radius: 3px;
+                padding: 5px;
+                margin-bottom: 15px;
+            }
+            #extension-banner > div{
+                display: block;
+                color: #fff;
+                padding: 2px;
+                cursor: pointer;
+            }
+            #extension-banner ol{
+                text-align: left;
+                color: beige;
+                border-top: solid 1px beige;
+            }
+            #extension-banner ol a{
+                color: aqua;
+            }
+        </style>
         <nav class="navbar navbar-default navbar-static-top navbar-fixed-top" role="navigation">
             <div class="container-fluid">
                 <div class="navbar-header">
