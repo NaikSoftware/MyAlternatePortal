@@ -1,2 +1,6 @@
-/nbproject/private/
+nbproject/private/
 .idea/
+node_modules/
+public/css/main.min.css
+public/js/index.min.js
+public/js/main.min.js
